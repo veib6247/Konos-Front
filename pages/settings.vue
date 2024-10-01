@@ -1,9 +1,9 @@
 <template>
-    <div class="h-full w-full"></div>
+    <div>Settings</div>
 </template>
 
 <script lang="ts" setup>
-    useUpdateTitle('Home')
+    useUpdateTitle('Settings')
 </script>
 
 <style></style>

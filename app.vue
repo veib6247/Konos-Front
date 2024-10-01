@@ -1,5 +1,5 @@
 <template>
-    <div class="flex h-dvh w-full flex-col">
+    <div class="flex h-dvh w-full flex-col overflow-hidden">
         <!-- top -->
         <AppTopNav />
 
@@ -7,13 +7,13 @@
         <div class="flex h-full w-full">
             <!-- left -->
             <div
-                class="flex h-full w-64 flex-col border-r border-r-green-300/30 px-6 py-4"
+                class="sticky flex h-full w-64 flex-col border-r border-r-green-300/30 px-6 py-4"
             >
                 <UVerticalNavigation :links="links" />
             </div>
 
             <!-- right -->
-            <div class="h-full w-full">
+            <div class="h-full w-full overflow-auto">
                 <NuxtPage />
             </div>
         </div>
@@ -21,15 +21,18 @@
 </template>
 
 <script setup lang="ts">
-    useHead({
-        title: 'Kronos',
-    })
+    useState('appName', () => 'Kronos')
 
     const links = [
         {
             label: 'Home',
-            icon: 'i-heroicons-home',
+            icon: 'heroicons:home-16-solid',
             to: '/',
+        },
+        {
+            label: 'Setting',
+            icon: 'heroicons:cog-6-tooth-16-solid',
+            to: '/settings',
         },
     ]
 </script>

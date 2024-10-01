@@ -4,7 +4,10 @@
             :loading="isLoading"
             :columns="columns"
             :rows="rows"
-            v-if="rows"
+            :empty-state="{
+                icon: 'i-heroicons-circle-stack-20-solid',
+                label: 'No items.',
+            }"
         >
             <template #expand="{ row }">
                 <div class="p-4 text-xs">
@@ -28,7 +31,7 @@
         },
         {
             key: 'x-slack-request-timestamp',
-            label: 'Slack Timestamp',
+            label: 'Raw Stamp',
             sortable: true,
         },
         {
@@ -72,16 +75,6 @@
             sortable: true,
         },
     ]
-
-    const page = ref(1)
-    const pageCount = 5
-
-    const pRows = computed(() => {
-        return rows.value.slice(
-            (page.value - 1) * pageCount,
-            page.value * pageCount
-        )
-    })
 
     /**
      *

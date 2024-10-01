@@ -13,12 +13,26 @@
         <!-- right -->
         <div class="flex w-1/2 flex-row-reverse px-6">
             <div class="my-auto flex flex-col">
-                <p class="text-xs">Logout</p>
+                <div class="flex flex-row gap-2" v-if="user?.email">
+                    <p class="my-auto text-xs">{{ user?.email }}</p>
+                    <UButton label="Logout" size="xs" @click="logout" />
+                </div>
             </div>
         </div>
     </nav>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+    const supabase = useSupabaseClient()
+    const user = useSupabaseUser()
+
+    /**
+     * go home
+     */
+    const logout = () => {
+        supabase.auth.signOut()
+        navigateTo('/login')
+    }
+</script>
 
 <style></style>

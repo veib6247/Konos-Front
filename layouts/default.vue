@@ -22,7 +22,7 @@
 <script setup lang="ts">
     const links = [
         {
-            label: 'Logs',
+            label: 'Time Logs',
             icon: 'heroicons:queue-list-16-solid',
             to: '/',
         },

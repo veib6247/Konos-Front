@@ -2,6 +2,7 @@
     <div class="my-auto w-full">
         <UFormGroup size="xs" label="User(s)">
             <USelectMenu
+                searchable
                 v-model="selected"
                 :options="users"
                 size="xs"

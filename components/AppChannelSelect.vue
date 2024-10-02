@@ -1,7 +1,12 @@
 <template>
     <div class="my-auto w-full">
         <UFormGroup size="xs" label="Channel">
-            <USelectMenu v-model="selected" :options="channels" size="xs" />
+            <USelectMenu
+                searchable
+                v-model="selected"
+                :options="channels"
+                size="xs"
+            />
         </UFormGroup>
     </div>
 </template>

@@ -106,6 +106,7 @@
     const getData = async () => {
         isLoading.value = true
 
+        // todo: PREFETCH INIT DATA ON APP LEVEL
         try {
             let query = supabase
                 .from('Slack Timestamp')

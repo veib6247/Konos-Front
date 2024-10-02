@@ -12,7 +12,7 @@
 <script lang="ts" setup>
     useUpdateTitle('Settings')
 
-    const showRawRowData = useState('showRawRowData', () => true)
+    const showRawRowData = useState('showRawRowData', () => false)
 </script>
 
 <style></style>

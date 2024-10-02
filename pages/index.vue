@@ -1,17 +1,29 @@
 <template>
-    <div class="h-full w-full">
+    <div class="h-full w-full overflow-auto">
         <!-- table action -->
-        <div class="flex flex-row gap-2 p-6">
-            <UButton
-                :loading="isLoading"
-                size="xs"
-                icon="heroicons:arrow-path-16-solid"
-                @click="getData()"
-            />
+        <div
+            class="sticky top-0 z-50 flex h-20 flex-row gap-2 border-b border-b-green-300/30 backdrop-blur-lg"
+        >
+            <!-- left -->
+            <div class="flex w-1/2 flex-row px-6">
+                <AppChannelSelect />
+            </div>
+
+            <!-- right -->
+            <div class="flex w-1/2 flex-row-reverse px-6">
+                <div class="my-auto">
+                    <UButton
+                        :loading="isLoading"
+                        size="xs"
+                        icon="heroicons:arrow-path-16-solid"
+                        @click="getData()"
+                    />
+                </div>
+            </div>
         </div>
 
         <!-- table -->
-        <div class="h-full overflow-auto">
+        <div class="h-full">
             <UTable
                 :loading="isLoading"
                 :columns="columns"
@@ -54,13 +66,8 @@
             sortable: true,
         },
         {
-            key: 'channel_id',
-            label: 'Channel ID',
-            sortable: true,
-        },
-        {
-            key: 'channel_name',
-            label: 'Channel Name',
+            key: 'command',
+            label: 'Command',
             sortable: true,
         },
         {
@@ -71,11 +78,6 @@
         {
             key: 'user_id',
             label: 'User ID',
-            sortable: true,
-        },
-        {
-            key: 'command',
-            label: 'Command',
             sortable: true,
         },
         {

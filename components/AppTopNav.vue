@@ -1,7 +1,5 @@
 <template>
-    <nav
-        class="sticky top-0 z-50 flex min-h-16 flex-row border-b border-b-green-300/30"
-    >
+    <div class="flex h-16 min-h-16 flex-row border-b border-b-green-300/30">
         <!-- left -->
         <div class="flex w-1/2 px-6">
             <div class="my-auto flex flex-col gap-0">
@@ -19,7 +17,7 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
 </template>
 
 <script lang="ts" setup>

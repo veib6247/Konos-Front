@@ -1,22 +1,21 @@
 <template>
-    <div class="flex h-dvh w-full flex-col overflow-hidden">
+    <div class="flex h-dvh min-h-dvh w-full flex-col overflow-hidden">
         <!-- top -->
-        <AppTopNav />
+        <header class="w-full">
+            <AppTopNav />
+        </header>
 
         <!-- bottom -->
-        <div class="flex h-full w-full">
-            <!-- left -->
-            <div
-                class="sticky flex h-full w-64 flex-col border-r border-r-green-300/30 px-6 py-4"
+        <main class="flex h-full flex-row">
+            <aside
+                class="w-64 min-w-64 flex-col border-r border-r-green-300/30 px-4 py-4"
             >
                 <UVerticalNavigation :links="links" />
-            </div>
-
-            <!-- right -->
-            <div class="h-full w-full overflow-hidden">
+            </aside>
+            <div class="customHeight flex w-full flex-col overflow-hidden">
                 <slot />
             </div>
-        </div>
+        </main>
     </div>
 </template>
 
@@ -34,3 +33,9 @@
         },
     ]
 </script>
+
+<style>
+    .customHeight {
+        height: calc(100dvh - 64px);
+    }
+</style>

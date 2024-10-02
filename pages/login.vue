@@ -1,6 +1,6 @@
 <template>
     <div
-        class="m-auto flex w-1/4 flex-col gap-4 rounded border border-green-300/30 p-6"
+        class="m-auto flex w-1/5 flex-col gap-4 rounded border border-green-300/30 p-6"
     >
         <div class="my-auto flex flex-col gap-0">
             <h1 class="text-primary text-2xl font-semibold">Kronos</h1>

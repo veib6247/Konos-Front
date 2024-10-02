@@ -2,15 +2,12 @@
     <div class="h-full w-full overflow-auto">
         <!-- table action -->
         <div
-            class="sticky top-0 z-50 flex h-20 flex-row gap-2 border-b border-b-green-300/30 backdrop-blur-lg"
+            class="sticky top-0 z-40 flex h-20 w-full flex-row gap-2 border-b border-b-green-300/30 backdrop-blur-lg"
         >
-            <!-- left -->
-            <div class="flex w-1/2 flex-row px-6">
+            <div class="flex w-1/2 flex-row px-4">
                 <AppChannelSelect />
             </div>
-
-            <!-- right -->
-            <div class="flex w-1/2 flex-row-reverse px-6">
+            <div class="flex w-1/2 flex-row-reverse px-4">
                 <div class="my-auto">
                     <UButton
                         :loading="isLoading"
@@ -23,7 +20,7 @@
         </div>
 
         <!-- table -->
-        <div class="h-full">
+        <div class="h-full min-h-full w-full">
             <UTable
                 :loading="isLoading"
                 :columns="columns"
@@ -52,7 +49,7 @@
     const columns = [
         {
             key: 'id',
-            label: 'ID',
+            label: '#',
             sortable: true,
         },
         {
@@ -83,11 +80,6 @@
         {
             key: 'text',
             label: 'User Notes',
-            sortable: true,
-        },
-        {
-            key: 'created_at',
-            label: 'Created At',
             sortable: true,
         },
     ]

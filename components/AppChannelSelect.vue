@@ -3,6 +3,7 @@
         <UFormGroup size="xs" label="Channel Name">
             <USelectMenu
                 searchable
+                clear-search-on-close
                 v-model="selected"
                 :options="channels"
                 size="xs"

@@ -3,6 +3,7 @@
         <UFormGroup size="xs" label="User(s)">
             <USelectMenu
                 searchable
+                clear-search-on-close
                 v-model="selected"
                 :options="users"
                 size="xs"

@@ -22,8 +22,8 @@
 <script setup lang="ts">
     const links = [
         {
-            label: 'Home',
-            icon: 'heroicons:home-16-solid',
+            label: 'Logs',
+            icon: 'heroicons:queue-list-16-solid',
             to: '/',
         },
         {

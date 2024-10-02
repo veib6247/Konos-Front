@@ -32,7 +32,7 @@
                     label: 'No items.',
                 }"
             >
-                <template #expand="{ row }">
+                <template #expand="{ row }" v-if="showRawRowData">
                     <div class="p-4 text-xs">
                         <pre>{{ row }}</pre>
                     </div>
@@ -45,6 +45,7 @@
 <script lang="ts" setup>
     useUpdateTitle('Home')
 
+    const showRawRowData = useState('showRawRowData')
     const isLoading = ref(false)
     const supabase = useSupabaseClient()
     const rows = ref()
@@ -55,7 +56,7 @@
     const columns = [
         {
             key: 'id',
-            label: '#',
+            label: 'ID',
             sortable: true,
         },
         {

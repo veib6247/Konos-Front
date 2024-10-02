@@ -12,25 +12,14 @@
 </template>
 
 <script lang="ts" setup>
-    type ChannelItem = {
-        id: number
-        created_at: string
-        channel_id: string
-        channel_name: string
-    }
-
-    type UIChannelItem = {
-        id: string
-        label: string
-        icon?: string
-    }
-
-    type UIChannelItems = UIChannelItem[]
+    import type { ChannelItem, UIChannelItem, UIChannelItems } from '~/types'
 
     const supabase = useSupabaseClient()
     const isLoading = ref(false)
     const channels = ref<UIChannelItems>([])
-    const selected = ref()
+    const selected = useState('selectedChannel', () => {
+        return ref<UIChannelItem>()
+    })
 
     /**
      * loads data into table
@@ -59,12 +48,7 @@
         }
     }
 
-    /**
-     *
-     */
-    onMounted(async () => {
-        await getData()
-    })
+    await getData()
 </script>
 
 <style></style>

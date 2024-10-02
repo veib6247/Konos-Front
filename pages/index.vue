@@ -42,17 +42,17 @@
 </template>
 
 <script lang="ts" setup>
+    import type { UIChannelItem } from '~/types'
+
     useUpdateTitle('Home')
 
     const isLoading = ref(false)
     const supabase = useSupabaseClient()
     const rows = ref()
-
     const sort = ref({
         column: 'id',
         direction: 'desc' as const,
     })
-
     const columns = [
         {
             key: 'id',
@@ -91,6 +91,13 @@
         },
     ]
 
+    const selectedChannel = useState<UIChannelItem>('selectedChannel')
+
+    watch(selectedChannel, async () => {
+        console.info(selectedChannel.value)
+        await getData()
+    })
+
     /**
      * loads data into table
      */
@@ -98,7 +105,10 @@
         isLoading.value = true
 
         try {
-            const { data } = await supabase.from('Slack Timestamp').select('*')
+            const { data } = await supabase
+                .from('Slack Timestamp')
+                .select('*')
+                .eq('channel_id', selectedChannel.value.id)
             rows.value = data
         } catch (error) {
             console.error(error)

@@ -4,8 +4,9 @@
         <div
             class="sticky top-0 z-40 flex h-20 w-full flex-row gap-2 border-b border-b-green-300/30 backdrop-blur-lg"
         >
-            <div class="flex w-1/2 flex-row px-4">
+            <div class="flex w-1/2 flex-row gap-2 px-4">
                 <AppChannelSelect />
+                <AppUserSelect />
             </div>
             <div class="flex w-1/2 flex-row-reverse px-4">
                 <div class="my-auto">
@@ -42,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-    import type { UIChannelItem } from '~/types'
+    import type { UIMenuItem } from '~/types'
 
     useUpdateTitle('Home')
 
@@ -91,7 +92,7 @@
         },
     ]
 
-    const selectedChannel = useState<UIChannelItem>('selectedChannel')
+    const selectedChannel = useState<UIMenuItem>('selectedChannel')
 
     /**
      * reload data whenever the selected channel changes

@@ -1,32 +1,24 @@
 <template>
     <div class="my-auto w-full">
         <UFormGroup size="xs" label="Channel">
-            <USelectMenu
-                v-model="selected"
-                :options="channels"
-                size="xs"
-                :loading="isLoading"
-            />
+            <USelectMenu v-model="selected" :options="channels" size="xs" />
         </UFormGroup>
     </div>
 </template>
 
 <script lang="ts" setup>
-    import type { ChannelItem, UIChannelItem, UIChannelItems } from '~/types'
+    import type { ChannelItem, UIMenuItem, UIMenuItems } from '~/types'
 
     const supabase = useSupabaseClient()
-    const isLoading = ref(false)
-    const channels = ref<UIChannelItems>([])
+    const channels = ref<UIMenuItems>([])
     const selected = useState('selectedChannel', () => {
-        return ref<UIChannelItem>()
+        return ref<UIMenuItem>()
     })
 
     /**
      * loads data into table
      */
     const getData = async () => {
-        isLoading.value = true
-
         try {
             const { data } = await supabase.from('Valid Channels').select('*')
             if (data) {
@@ -43,7 +35,6 @@
             console.error(error)
             channels.value = []
         } finally {
-            isLoading.value = false
             selected.value = channels.value[0]
         }
     }

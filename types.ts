@@ -5,10 +5,15 @@ export type ChannelItem = {
 	channel_name: string
 }
 
-export type UIChannelItem = {
+export type UserItem = {
+	user_id: string
+	user_name: string
+}
+
+export type UIMenuItem = {
 	id: string
 	label: string
 	icon?: string
 }
 
-export type UIChannelItems = UIChannelItem[]
+export type UIMenuItems = UIMenuItem[]

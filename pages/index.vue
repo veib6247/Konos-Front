@@ -23,6 +23,7 @@
         <div class="h-full min-h-full w-full">
             <UTable
                 :loading="isLoading"
+                :sort="sort"
                 :columns="columns"
                 :rows="rows"
                 :empty-state="{
@@ -46,6 +47,12 @@
     const isLoading = ref(false)
     const supabase = useSupabaseClient()
     const rows = ref()
+
+    const sort = ref({
+        column: 'id',
+        direction: 'desc' as const,
+    })
+
     const columns = [
         {
             key: 'id',

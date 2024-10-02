@@ -1,6 +1,6 @@
 <template>
     <div class="my-auto w-full">
-        <UFormGroup size="xs" label="Channel">
+        <UFormGroup size="xs" label="Channel Name">
             <USelectMenu
                 searchable
                 v-model="selected"

@@ -39,8 +39,6 @@
             }
         } catch (error) {
             console.error(error)
-        } finally {
-            selected.value.push(users.value[0])
         }
     }
 

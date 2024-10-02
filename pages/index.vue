@@ -81,11 +81,6 @@
             sortable: true,
         },
         {
-            key: 'user_id',
-            label: 'User ID',
-            sortable: true,
-        },
-        {
             key: 'text',
             label: 'User Notes',
             sortable: true,
@@ -93,11 +88,16 @@
     ]
 
     const selectedChannel = useState<UIMenuItem>('selectedChannel')
+    const selectedUsers = useState<UIMenuItem[]>('selectedUser')
 
     /**
      * reload data whenever the selected channel changes
      */
     watch(selectedChannel, async () => {
+        await getData()
+    })
+
+    watch(selectedUsers, async () => {
         await getData()
     })
 
@@ -108,10 +108,25 @@
         isLoading.value = true
 
         try {
-            const { data } = await supabase
+            let query = supabase
                 .from('Slack Timestamp')
                 .select('*')
                 .eq('channel_id', selectedChannel.value.id)
+
+            if (selectedUsers.value.length > 0) {
+                const users = []
+                for (const user of selectedUsers.value) {
+                    users.push(user.label)
+                }
+
+                query = supabase
+                    .from('Slack Timestamp')
+                    .select('*')
+                    .eq('channel_id', selectedChannel.value.id)
+                    .in('user_name', users)
+            }
+
+            const { data } = await query
             rows.value = data
         } catch (error) {
             console.error(error)

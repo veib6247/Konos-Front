@@ -93,8 +93,10 @@
 
     const selectedChannel = useState<UIChannelItem>('selectedChannel')
 
+    /**
+     * reload data whenever the selected channel changes
+     */
     watch(selectedChannel, async () => {
-        console.info(selectedChannel.value)
         await getData()
     })
 

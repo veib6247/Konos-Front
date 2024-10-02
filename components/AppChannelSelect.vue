@@ -1,5 +1,5 @@
 <template>
-    <div class="my-auto">
+    <div class="my-auto w-full">
         <UFormGroup size="xs" label="Channel">
             <USelectMenu
                 v-model="selected"

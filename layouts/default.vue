@@ -13,7 +13,7 @@
             </div>
 
             <!-- right -->
-            <div class="h-full w-full overflow-scroll">
+            <div class="h-full w-full overflow-hidden">
                 <slot />
             </div>
         </div>

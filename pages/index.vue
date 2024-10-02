@@ -1,25 +1,39 @@
 <template>
     <div class="h-full w-full">
-        <UTable
-            :loading="isLoading"
-            :columns="columns"
-            :rows="rows"
-            :empty-state="{
-                icon: 'i-heroicons-circle-stack-20-solid',
-                label: 'No items.',
-            }"
-        >
-            <template #expand="{ row }">
-                <div class="p-4 text-xs">
-                    <pre>{{ row }}</pre>
-                </div>
-            </template>
-        </UTable>
+        <!-- table action -->
+        <div class="flex flex-row gap-2 p-6">
+            <UButton
+                :loading="isLoading"
+                size="xs"
+                icon="heroicons:arrow-path-16-solid"
+                @click="getData()"
+            />
+        </div>
+
+        <!-- table -->
+        <div class="h-full overflow-auto">
+            <UTable
+                :loading="isLoading"
+                :columns="columns"
+                :rows="rows"
+                :empty-state="{
+                    icon: 'i-heroicons-circle-stack-20-solid',
+                    label: 'No items.',
+                }"
+            >
+                <template #expand="{ row }">
+                    <div class="p-4 text-xs">
+                        <pre>{{ row }}</pre>
+                    </div>
+                </template>
+            </UTable>
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
     useUpdateTitle('Home')
+
     const isLoading = ref(false)
     const supabase = useSupabaseClient()
     const rows = ref()
@@ -77,13 +91,27 @@
     ]
 
     /**
+     * loads data into table
+     */
+    const getData = async () => {
+        isLoading.value = true
+
+        try {
+            const { data } = await supabase.from('Slack Timestamp').select('*')
+            rows.value = data
+        } catch (error) {
+            console.error(error)
+            rows.value = []
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    /**
      *
      */
     onMounted(async () => {
-        isLoading.value = true
-        const { data } = await supabase.from('Slack Timestamp').select('*')
-        rows.value = data
-        isLoading.value = false
+        await getData()
     })
 </script>
 

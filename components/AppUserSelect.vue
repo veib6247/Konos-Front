@@ -13,8 +13,6 @@
 </template>
 
 <script lang="ts" setup>
-    import type { UIMenuItems, UIMenuItem, UserItem } from '~/types'
-
     const supabase = useSupabaseClient()
     const users = ref<UIMenuItems>([])
     const selected = useState('selectedUser', () => {

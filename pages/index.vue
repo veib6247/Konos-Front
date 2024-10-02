@@ -43,8 +43,6 @@
 </template>
 
 <script lang="ts" setup>
-    import type { UIMenuItem } from '~/types'
-
     useUpdateTitle('Home')
 
     const isLoading = ref(false)

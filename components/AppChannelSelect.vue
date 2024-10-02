@@ -12,8 +12,6 @@
 </template>
 
 <script lang="ts" setup>
-    import type { ChannelItem, UIMenuItem, UIMenuItems } from '~/types'
-
     const supabase = useSupabaseClient()
     const channels = ref<UIMenuItems>([])
     const selected = useState('selectedChannel', () => {

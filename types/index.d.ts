@@ -18,6 +18,8 @@ declare global {
 	}
 
 	type UIMenuItems = UIMenuItem[]
+
+	type DateRange = [Date, Date]
 }
 
 export {}

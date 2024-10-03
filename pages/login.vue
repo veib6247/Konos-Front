@@ -1,6 +1,6 @@
 <template>
     <div
-        class="m-auto flex w-1/5 flex-col gap-4 rounded border border-green-300/30 p-6"
+        class="m-auto flex w-1/4 flex-col gap-4 rounded border border-green-300/30 p-6"
     >
         <div class="my-auto flex flex-col gap-0">
             <h1 class="text-primary text-2xl font-semibold">Kronos</h1>
@@ -21,7 +21,9 @@
                 <UInput size="xs" v-model="state.password" type="password" />
             </UFormGroup>
 
-            <UButton type="submit" :loading="isLoading"> Login </UButton>
+            <div class="flex flex-row-reverse">
+                <UButton type="submit" :loading="isLoading"> Login </UButton>
+            </div>
         </UForm>
 
         <UAlert
@@ -76,7 +78,7 @@
                 email: event.data.email,
                 password: event.data.password,
             })
-            if (user) navigateTo('/')
+            if (user) await navigateTo('/')
             if (error) throw error
         } catch (error) {
             isError.value = true

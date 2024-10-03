@@ -4,7 +4,9 @@
         <div
             class="sticky top-0 z-40 flex h-20 w-full flex-row gap-2 border-b border-b-green-300/30 backdrop-blur-lg"
         >
-            <div class="flex w-full flex-row gap-2 px-4">
+            <div
+                class="flex w-full flex-row gap-2 border-r border-r-green-300/30 px-4"
+            >
                 <AppChannelSelect />
                 <AppUserSelect />
                 <UFormGroup class="my-auto w-full" size="xs" label="Date">
@@ -16,7 +18,7 @@
                     ></VueDatePicker>
                 </UFormGroup>
             </div>
-            <div class="flex flex-row-reverse gap-2 px-4">
+            <div class="flex flex-row-reverse gap-3 px-4">
                 <div class="my-auto">
                     <UButton
                         :loading="isLoading"

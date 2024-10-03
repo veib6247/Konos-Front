@@ -9,7 +9,7 @@
                 <AppUserSelect />
                 <UFormGroup class="my-auto w-full" size="xs" label="Date">
                     <VueDatePicker
-                        class="dp__theme_dark"
+                        :dark="true"
                         v-model="dateRange"
                         :format="format"
                         range
@@ -64,7 +64,7 @@
      */
     const format = (dateRange: DateRange) => {
         if (dateRange[1])
-            return `From: ${getFormattedDate(dateRange[0])} -> To: ${getFormattedDate(dateRange[1])}`
+            return `from ${getFormattedDate(dateRange[0])} - to ${getFormattedDate(dateRange[1])}`
 
         return getFormattedDate(dateRange[0])
     }
@@ -192,19 +192,22 @@
 
 <style>
     .dp__theme_dark {
-        --dp-background-color: #212121;
+        --dp-font-size: 13px;
+        --dp-border-radius: 0.375rem;
+        --dp-cell-border-radius: 0.375rem;
+        --dp-background-color: #111827;
         --dp-text-color: #fff;
         --dp-hover-color: #484848;
         --dp-hover-text-color: #fff;
         --dp-hover-icon-color: #959595;
-        --dp-primary-color: #005cb2;
+        --dp-primary-color: #4ade80;
         --dp-primary-disabled-color: #61a8ea;
         --dp-primary-text-color: #fff;
         --dp-secondary-color: #a9a9a9;
-        --dp-border-color: #2d2d2d;
-        --dp-menu-border-color: #2d2d2d;
-        --dp-border-color-hover: #aaaeb7;
-        --dp-border-color-focus: #aaaeb7;
+        --dp-border-color: rgb(55 65 81);
+        --dp-menu-border-color: rgb(55 65 81);
+        --dp-border-color-hover: rgb(55 65 81);
+        --dp-border-color-focus: rgb(55 65 81);
         --dp-disabled-color: #737373;
         --dp-disabled-color-text: #d0d0d0;
         --dp-scroll-bar-background: #212121;
@@ -215,7 +218,7 @@
         --dp-danger-color: #e53935;
         --dp-marker-color: #e53935;
         --dp-tooltip-color: #3e3e3e;
-        --dp-highlight-color: rgb(0 92 178 / 20%);
+        --dp-highlight-color: #4ade80;
         --dp-range-between-dates-background-color: var(
             --dp-hover-color,
             #484848

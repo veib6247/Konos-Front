@@ -6,7 +6,7 @@
                 clear-search-on-close
                 v-model="selected"
                 :options="channels"
-                size="xs"
+                size="sm"
             />
         </UFormGroup>
     </div>

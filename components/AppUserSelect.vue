@@ -6,7 +6,7 @@
                 clear-search-on-close
                 v-model="selected"
                 :options="users"
-                size="xs"
+                size="sm"
                 multiple
             />
         </UFormGroup>

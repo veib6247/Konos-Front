@@ -16,13 +16,21 @@
                     ></VueDatePicker>
                 </UFormGroup>
             </div>
-            <div class="flex flex-row-reverse px-4">
+            <div class="flex flex-row-reverse gap-2 px-4">
                 <div class="my-auto">
                     <UButton
                         :loading="isLoading"
                         size="xs"
                         icon="heroicons:arrow-path-16-solid"
                         @click="getData()"
+                    />
+                </div>
+
+                <div class="my-auto">
+                    <UButton
+                        size="xs"
+                        icon="heroicons:table-cells-16-solid"
+                        @click="exportData()"
                     />
                 </div>
             </div>
@@ -53,6 +61,7 @@
 <script lang="ts" setup>
     import VueDatePicker from '@vuepic/vue-datepicker'
     import '@vuepic/vue-datepicker/dist/main.css'
+    import { mkConfig, generateCsv, download } from 'export-to-csv'
 
     useUpdateTitle('Home')
 
@@ -180,6 +189,18 @@
         } finally {
             isLoading.value = false
         }
+    }
+
+    /**
+     *
+     */
+    const exportData = () => {
+        // init config for export button
+        // mkConfig merges your options with the defaults
+        // and returns WithDefaults<ConfigOptions>
+        const csvConfig = mkConfig({ useKeysAsHeaders: true })
+        const csv = generateCsv(csvConfig)(rows.value)
+        download(csvConfig)(csv)
     }
 
     /**

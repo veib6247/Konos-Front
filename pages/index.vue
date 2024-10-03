@@ -63,19 +63,10 @@
      * date picker UI format
      */
     const format = (dateRange: DateRange) => {
-        const dayFrom = dateRange[0].getDate()
-        const monthFrom = dateRange[0].getMonth()
-        const yearFrom = dateRange[0].getFullYear()
+        if (dateRange[1])
+            return `From: ${getFormattedDate(dateRange[0])} -> To: ${getFormattedDate(dateRange[1])}`
 
-        if (dateRange[1]) {
-            const dayTo = dateRange[1].getDate()
-            const monthTo = dateRange[1].getMonth()
-            const yearTo = dateRange[1].getFullYear()
-
-            return `From: ${yearFrom}-${leftZeroPad(monthFrom)}-${leftZeroPad(dayFrom)} -> To: ${yearTo}-${leftZeroPad(monthTo)}-${leftZeroPad(dayTo)}`
-        }
-
-        return `${yearFrom}-${leftZeroPad(monthFrom)}-${leftZeroPad(dayFrom)}`
+        return getFormattedDate(dateRange[0])
     }
 
     const showRawRowData = useState('showRawRowData')
@@ -133,6 +124,10 @@
         await getData()
     })
 
+    watch(dateRange, async () => {
+        await getData()
+    })
+
     /**
      * loads data into table
      */
@@ -146,8 +141,14 @@
                 .from(tableName)
                 .select('*')
                 .eq('channel_id', selectedChannel.value.id)
-                .gte('timestamp', '2024-09-30 00:00:00')
-                .lte('timestamp', '2024-09-30 23:59:59')
+                .gte(
+                    'timestamp',
+                    `${getFormattedDate(dateRange.value[0])} 00:00:00`
+                )
+                .lte(
+                    'timestamp',
+                    `${getFormattedDate(dateRange.value[1])} 23:59:59`
+                )
 
             if (selectedUsers.value.length > 0) {
                 const users = []
@@ -160,8 +161,14 @@
                     .select('*')
                     .eq('channel_id', selectedChannel.value.id)
                     .in('user_name', users)
-                    .gte('timestamp', '2024-09-30 00:00:00')
-                    .lte('timestamp', '2024-09-30 23:59:59')
+                    .gte(
+                        'timestamp',
+                        `${getFormattedDate(dateRange.value[0])} 00:00:00`
+                    )
+                    .lte(
+                        'timestamp',
+                        `${getFormattedDate(dateRange.value[1])} 23:59:59`
+                    )
             }
 
             const { data, error } = await query

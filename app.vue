@@ -15,18 +15,19 @@
     /**
      * fetching valid channels
      */
-    const channels = ref<UIMenuItems>([])
-    const selectedChannel = useState('selectedChannel', () => {
-        return ref<UIMenuItem>()
+    const channels = useState<UIMenuItems>('availableChannels', () => {
+        return []
     })
 
-    useState('availableChannels', () => {
-        return channels
+    const selectedChannel = useState('selectedChannel', () => {
+        return ref<UIMenuItem>()
     })
 
     await getValidChannels()
 
     async function getValidChannels() {
+        channels.value = [] // clear old data
+
         try {
             const { data } = await supabase.from('Valid Channels').select('*')
             if (data) {
@@ -50,17 +51,19 @@
     /**
      * fetching available users
      */
-    const users = ref<UIMenuItems>([])
+    const users = useState<UIMenuItems>('availableUsers', () => {
+        return []
+    })
+
     useState('selectedUser', () => {
         return ref<UIMenuItem[]>([])
-    })
-    useState('availableUsers', () => {
-        return users
     })
 
     await getAvailableUsers()
 
     async function getAvailableUsers() {
+        users.value = []
+
         try {
             const { data } = await supabase.from('App Users').select('*')
             if (data) {

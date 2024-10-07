@@ -9,7 +9,7 @@
             >
                 <AppChannelSelect />
                 <AppUserSelect />
-                <UFormGroup class="my-auto w-full" size="xs" label="Date">
+                <UFormGroup class="my-auto w-full" size="xs" label="Date Range">
                     <VueDatePicker
                         :dark="true"
                         v-model="dateRange"

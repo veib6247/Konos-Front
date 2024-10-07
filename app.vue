@@ -12,7 +12,9 @@
     useState('showRawRowData', () => true)
     const supabase = useSupabaseClient()
 
-    // fetching valid channels
+    /**
+     * fetching valid channels
+     */
     const channels = ref<UIMenuItems>([])
     const selectedChannel = useState('selectedChannel', () => {
         return ref<UIMenuItem>()
@@ -24,9 +26,6 @@
 
     await getValidChannels()
 
-    /**
-     *
-     */
     async function getValidChannels() {
         try {
             const { data } = await supabase.from('Valid Channels').select('*')
@@ -48,7 +47,9 @@
         }
     }
 
-    // fetching available users
+    /**
+     * fetching available users
+     */
     const users = ref<UIMenuItems>([])
     useState('selectedUser', () => {
         return ref<UIMenuItem[]>([])
@@ -59,9 +60,6 @@
 
     await getAvailableUsers()
 
-    /**
-     *
-     */
     async function getAvailableUsers() {
         try {
             const { data } = await supabase.from('App Users').select('*')

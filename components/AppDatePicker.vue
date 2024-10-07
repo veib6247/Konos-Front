@@ -4,6 +4,7 @@
             :dark="true"
             v-model="dateRange"
             :enable-time-picker="false"
+            :action-row="{ showPreview: false }"
             :format="format"
             range
         ></VueDatePicker>

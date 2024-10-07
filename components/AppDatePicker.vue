@@ -3,6 +3,7 @@
         <VueDatePicker
             :dark="true"
             v-model="dateRange"
+            :enable-time-picker="false"
             :format="format"
             range
         ></VueDatePicker>
@@ -24,7 +25,7 @@
      */
     const format = (dateRange: DateRange) => {
         if (dateRange[1])
-            return `from ${getFormattedDate(dateRange[0])} - to ${getFormattedDate(dateRange[1])}`
+            return `${getFormattedDate(dateRange[0])} - ${getFormattedDate(dateRange[1])}`
 
         return getFormattedDate(dateRange[0])
     }

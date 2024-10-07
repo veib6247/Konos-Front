@@ -52,7 +52,7 @@
                 <template #text-data="{ row }">
                     <div class="w-48">
                         <UTooltip :text="row.text">
-                            <p class="w-56 truncate">{{ row.text }}</p>
+                            <p class="truncate">{{ row.text }}</p>
                         </UTooltip>
                     </div>
                 </template>

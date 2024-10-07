@@ -9,14 +9,7 @@
             >
                 <AppChannelSelect />
                 <AppUserSelect />
-                <UFormGroup class="my-auto w-full" size="xs" label="Date Range">
-                    <VueDatePicker
-                        :dark="true"
-                        v-model="dateRange"
-                        :format="format"
-                        range
-                    ></VueDatePicker>
-                </UFormGroup>
+                <AppDatePicker />
             </div>
             <div class="flex flex-row-reverse gap-3 px-4">
                 <div class="my-auto">
@@ -69,25 +62,13 @@
 </template>
 
 <script lang="ts" setup>
-    import VueDatePicker from '@vuepic/vue-datepicker'
-    import '@vuepic/vue-datepicker/dist/main.css'
     import { mkConfig, generateCsv, download } from 'export-to-csv'
+    import AppDatePicker from '~/components/AppDatePicker.vue'
 
     useUpdateTitle('Home')
 
     // init date picker with the date today
-    const dateRange = ref<DateRange>([new Date(), new Date()])
-
-    /**
-     * date picker UI format
-     */
-    const format = (dateRange: DateRange) => {
-        if (dateRange[1])
-            return `from ${getFormattedDate(dateRange[0])} - to ${getFormattedDate(dateRange[1])}`
-
-        return getFormattedDate(dateRange[0])
-    }
-
+    const dateRange = useState<DateRange>('dateRange')
     const showRawRowData = useState('showRawRowData')
     const isLoading = ref(false)
     const supabase = useSupabaseClient()

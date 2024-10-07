@@ -5,7 +5,11 @@
 </template>
 
 <script setup lang="ts">
+    /**
+     * init states
+     */
     useState('appName', () => 'Kronos')
+    useState('showRawRowData', () => true)
 </script>
 
 <style>

@@ -194,13 +194,6 @@
         download(csvConfig)(csv)
     }
 
-    /**
-     *
-     */
-    // onMounted(async () => {
-    //     await getData()
-    // })
-
     await getData()
 </script>
 

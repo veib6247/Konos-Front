@@ -4,7 +4,7 @@
             <USelectMenu
                 searchable
                 clear-search-on-close
-                v-model="selected"
+                v-model="selectedUsers"
                 :options="users"
                 size="sm"
                 multiple
@@ -14,34 +14,32 @@
 </template>
 
 <script lang="ts" setup>
-    const supabase = useSupabaseClient()
-    const users = ref<UIMenuItems>([])
-    const selected = useState('selectedUser', () => {
-        return ref<UIMenuItem[]>([])
-    })
+    // const supabase = useSupabaseClient()
+    const users = useState<UIMenuItems>('availableUsers')
+    const selectedUsers = useState<UIMenuItem[]>('selectedUser')
 
     /**
      *
      */
-    const getUsers = async () => {
-        try {
-            const { data } = await supabase.from('App Users').select('*')
-            if (data) {
-                for (const channel of data) {
-                    const item = channel as UserItem
-                    users.value.push({
-                        id: item.user_id,
-                        label: item.user_name,
-                        icon: 'heroicons:user-circle-16-solid',
-                    })
-                }
-            }
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    // const getUsers = async () => {
+    //     try {
+    //         const { data } = await supabase.from('App Users').select('*')
+    //         if (data) {
+    //             for (const channel of data) {
+    //                 const item = channel as UserItem
+    //                 users.value.push({
+    //                     id: item.user_id,
+    //                     label: item.user_name,
+    //                     icon: 'heroicons:user-circle-16-solid',
+    //                 })
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+    // }
 
-    await getUsers()
+    // await getUsers()
 </script>
 
 <style></style>

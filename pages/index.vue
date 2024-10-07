@@ -216,9 +216,11 @@
     /**
      *
      */
-    onMounted(async () => {
-        await getData()
-    })
+    // onMounted(async () => {
+    //     await getData()
+    // })
+
+    await getData()
 </script>
 
 <style>

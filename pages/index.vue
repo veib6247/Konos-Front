@@ -4,29 +4,28 @@
         <div
             class="sticky top-0 z-40 flex h-20 w-full flex-row gap-2 border-b border-b-green-300/30 backdrop-blur-lg"
         >
-            <div
-                class="flex w-full flex-row gap-2 border-r border-r-green-300/30 px-4"
-            >
+            <div class="flex w-full flex-row gap-2 px-4">
                 <AppChannelSelect />
                 <AppUserSelect />
                 <AppDatePicker />
-            </div>
-            <div class="flex flex-row-reverse gap-3 px-4">
                 <div class="my-auto">
-                    <UButton
-                        :loading="isLoading"
-                        size="xs"
-                        icon="heroicons:arrow-path-16-solid"
-                        @click="getData()"
-                    />
-                </div>
-
-                <div class="my-auto">
-                    <UButton
-                        size="xs"
-                        icon="heroicons:table-cells-16-solid"
-                        @click="exportData()"
-                    />
+                    <UFormGroup label="Actions" size="xs">
+                        <div class="flex flex-row gap-2">
+                            <UButton
+                                size="xs"
+                                label="Export"
+                                icon="heroicons:table-cells-16-solid"
+                                @click="exportData()"
+                            />
+                            <UButton
+                                :loading="isLoading"
+                                label="Reload"
+                                size="xs"
+                                icon="heroicons:arrow-path-16-solid"
+                                @click="getData()"
+                            />
+                        </div>
+                    </UFormGroup>
                 </div>
             </div>
         </div>

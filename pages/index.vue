@@ -42,12 +42,14 @@
                     label: 'No items.',
                 }"
             >
+                <!-- dropdown for raw data -->
                 <template #expand="{ row }" v-if="showRawRowData">
                     <div class="p-4 text-xs">
                         <pre>{{ row }}</pre>
                     </div>
                 </template>
 
+                <!-- User notes data -->
                 <template #text-data="{ row }">
                     <UTooltip :text="row.text">
                         <div class="w-48 truncate italic">
@@ -68,7 +70,8 @@
 
     // init date picker with the date today
     const dateRange = useState<DateRange>('dateRange')
-    const showRawRowData = useState('showRawRowData')
+    const showRawRowData = useState<boolean>('showRawRowData')
+    const showRawTimestamps = useState<boolean>('showRawTimestamps')
     const isLoading = ref(false)
     const supabase = useSupabaseClient()
     const rows = ref()
@@ -76,15 +79,10 @@
         column: 'id',
         direction: 'desc' as const,
     })
-    const columns = [
+    const columns = ref([
         {
             key: 'id',
             label: 'ID',
-            sortable: true,
-        },
-        {
-            key: 'x-slack-request-timestamp',
-            label: 'Raw Stamp',
             sortable: true,
         },
         {
@@ -107,7 +105,7 @@
             label: 'User Notes',
             sortable: true,
         },
-    ]
+    ])
 
     const selectedChannel = useState<UIMenuItem>('selectedChannel')
     const selectedUsers = useState<UIMenuItem[]>('selectedUser')
@@ -125,6 +123,24 @@
 
     watch(dateRange, async () => {
         await getData()
+    })
+
+    watch(showRawTimestamps, (newData, oldData) => {
+        if (!newData) {
+            const index = columns.value.findIndex((item) => {
+                return item.key === 'x-slack-request-timestamp'
+            })
+
+            if (index !== -1) {
+                columns.value.splice(index, 1)
+            }
+        } else {
+            columns.value.splice(1, 0, {
+                key: 'x-slack-request-timestamp',
+                label: 'Raw Timestamp',
+                sortable: false,
+            })
+        }
     })
 
     /**

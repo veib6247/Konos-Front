@@ -16,9 +16,7 @@
     import '@vuepic/vue-datepicker/dist/main.css'
 
     // init date picker with the date today
-    const dateRange = useState<DateRange>('dateRange', () => {
-        return [new Date(), new Date()]
-    })
+    const dateRange = useState<DateRange>('dateRange')
 
     /**
      * date picker UI format

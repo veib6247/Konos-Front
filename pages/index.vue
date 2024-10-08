@@ -5,17 +5,7 @@
             class="sticky top-0 z-40 flex h-20 w-full flex-row gap-2 border-b border-b-green-300/30 backdrop-blur-lg"
         >
             <div class="flex w-full flex-row gap-2 px-4">
-                <div class="my-auto w-full">
-                    <UFormGroup label="Columns" size="xs">
-                        <USelectMenu
-                            size="sm"
-                            v-model="selectedColumns"
-                            :options="columns"
-                            multiple
-                            placeholder="Columns"
-                        />
-                    </UFormGroup>
-                </div>
+                <AppColumnSelector />
                 <AppChannelSelect />
                 <AppUserSelect />
                 <AppDatePicker />
@@ -89,35 +79,7 @@
         column: 'id',
         direction: 'desc' as const,
     })
-    const columns = [
-        {
-            key: 'id',
-            label: 'ID',
-            sortable: true,
-        },
-        {
-            key: 'timestamp',
-            label: 'Timestamp',
-            sortable: true,
-        },
-        {
-            key: 'command',
-            label: 'Command',
-            sortable: true,
-        },
-        {
-            key: 'user_name',
-            label: 'User Name',
-            sortable: true,
-        },
-        {
-            key: 'text',
-            label: 'User Notes',
-            sortable: true,
-        },
-    ]
-    const selectedColumns = ref([...columns])
-
+    const selectedColumns = useState<TableColumn[]>('selectedColumns')
     const selectedChannel = useState<UIMenuItem>('selectedChannel')
     const selectedUsers = useState<UIMenuItem[]>('selectedUser')
 

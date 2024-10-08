@@ -20,6 +20,12 @@ declare global {
 	type UIMenuItems = UIMenuItem[]
 
 	type DateRange = [Date, Date]
+
+	type TableColumn = {
+		key: string
+		label: string
+		sortable: boolean
+	}
 }
 
 export {}

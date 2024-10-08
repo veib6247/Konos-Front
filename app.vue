@@ -10,7 +10,6 @@
      */
     useState<string>('appName', () => 'Kronos')
     useState<boolean>('showRawRowData', () => true)
-    useState<boolean>('showRawTimestamps', () => false)
     useState<DateRange>('dateRange', () => {
         return [new Date(), new Date()]
     })

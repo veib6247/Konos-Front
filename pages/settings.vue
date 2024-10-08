@@ -6,13 +6,6 @@
         >
             <UToggle size="xs" v-model="showRawRowData" />
         </UFormGroup>
-
-        <UFormGroup
-            size="xs"
-            label="Show column for raw epoch timestamp (Raw Timestamp Column)"
-        >
-            <UToggle size="xs" v-model="showRawTimestamps" />
-        </UFormGroup>
     </div>
 </template>
 
@@ -21,5 +14,4 @@
 
     // states
     const showRawRowData = useState<boolean>('showRawRowData')
-    const showRawTimestamps = useState<boolean>('showRawTimestamps')
 </script>

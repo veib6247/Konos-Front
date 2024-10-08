@@ -5,6 +5,17 @@
             class="sticky top-0 z-40 flex h-20 w-full flex-row gap-2 border-b border-b-green-300/30 backdrop-blur-lg"
         >
             <div class="flex w-full flex-row gap-2 px-4">
+                <div class="my-auto w-full">
+                    <UFormGroup label="Columns" size="xs">
+                        <USelectMenu
+                            size="sm"
+                            v-model="selectedColumns"
+                            :options="columns"
+                            multiple
+                            placeholder="Columns"
+                        />
+                    </UFormGroup>
+                </div>
                 <AppChannelSelect />
                 <AppUserSelect />
                 <AppDatePicker />
@@ -12,7 +23,7 @@
                     <UFormGroup label="Actions" size="xs">
                         <div class="flex flex-row gap-2">
                             <UButton
-                                size="xs"
+                                size="sm"
                                 label="Export"
                                 icon="heroicons:table-cells-16-solid"
                                 @click="exportData()"
@@ -20,7 +31,7 @@
                             <UButton
                                 :loading="isLoading"
                                 label="Reload"
-                                size="xs"
+                                size="sm"
                                 icon="heroicons:arrow-path-16-solid"
                                 @click="getData()"
                             />
@@ -35,7 +46,7 @@
             <UTable
                 :loading="isLoading"
                 :sort="sort"
-                :columns="columns"
+                :columns="selectedColumns"
                 :rows="rows"
                 :empty-state="{
                     icon: 'i-heroicons-circle-stack-20-solid',
@@ -71,7 +82,6 @@
     // init date picker with the date today
     const dateRange = useState<DateRange>('dateRange')
     const showRawRowData = useState<boolean>('showRawRowData')
-    const showRawTimestamps = useState<boolean>('showRawTimestamps')
     const isLoading = ref(false)
     const supabase = useSupabaseClient()
     const rows = ref()
@@ -79,7 +89,7 @@
         column: 'id',
         direction: 'desc' as const,
     })
-    const columns = ref([
+    const columns = [
         {
             key: 'id',
             label: 'ID',
@@ -105,7 +115,8 @@
             label: 'User Notes',
             sortable: true,
         },
-    ])
+    ]
+    const selectedColumns = ref([...columns])
 
     const selectedChannel = useState<UIMenuItem>('selectedChannel')
     const selectedUsers = useState<UIMenuItem[]>('selectedUser')
@@ -123,24 +134,6 @@
 
     watch(dateRange, async () => {
         await getData()
-    })
-
-    watch(showRawTimestamps, (newData, oldData) => {
-        if (!newData) {
-            const index = columns.value.findIndex((item) => {
-                return item.key === 'x-slack-request-timestamp'
-            })
-
-            if (index !== -1) {
-                columns.value.splice(index, 1)
-            }
-        } else {
-            columns.value.splice(1, 0, {
-                key: 'x-slack-request-timestamp',
-                label: 'Raw Timestamp',
-                sortable: false,
-            })
-        }
     })
 
     /**

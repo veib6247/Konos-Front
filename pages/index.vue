@@ -50,11 +50,11 @@
                 </template>
 
                 <template #text-data="{ row }">
-                    <div class="w-48">
-                        <UTooltip :text="row.text">
-                            <p class="truncate">{{ row.text }}</p>
-                        </UTooltip>
-                    </div>
+                    <UTooltip :text="row.text">
+                        <div class="w-48 truncate italic">
+                            {{ row.text }}
+                        </div>
+                    </UTooltip>
                 </template>
             </UTable>
         </div>

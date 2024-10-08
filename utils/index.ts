@@ -3,9 +3,8 @@
  * @param num
  * @returns formatted string or just the same number
  */
-export const leftZeroPad = (num: number) => {
-	if (num < 10) return `0${num}`
-	return num
+export function leftZeroPad(num: number): string | number {
+	return num < 10 ? `0${num}` : num
 }
 
 /**
@@ -13,6 +12,6 @@ export const leftZeroPad = (num: number) => {
  * @param date
  * @returns formatted date
  */
-export const getFormattedDate = (date: Date) => {
+export function getFormattedDate(date: Date): string {
 	return `${date.getFullYear()}-${leftZeroPad(date.getMonth() + 1)}-${leftZeroPad(date.getDate())}`
 }

@@ -17,8 +17,6 @@ declare global {
 		icon?: string
 	}
 
-	type UIMenuItems = UIMenuItem[]
-
 	type DateRange = [Date, Date]
 
 	type TableColumn = {

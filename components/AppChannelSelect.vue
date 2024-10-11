@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
     // const supabase = useSupabaseClient()
-    const channels = useState<UIMenuItems>('availableChannels')
+    const channels = useState<UIMenuItem[]>('availableChannels')
     const selected = useState<UIMenuItem>('selectedChannel')
 </script>
 

@@ -14,8 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-    // const supabase = useSupabaseClient()
-    const users = useState<UIMenuItems>('availableUsers')
+    const users = useState<UIMenuItem[]>('availableUsers')
     const selectedUsers = useState<UIMenuItem[]>('selectedUser')
 </script>
 

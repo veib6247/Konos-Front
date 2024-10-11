@@ -19,7 +19,7 @@
     /**
      * fetching valid channels
      */
-    const channels = useState<UIMenuItems>('availableChannels', () => {
+    const channels = useState<UIMenuItem[]>('availableChannels', () => {
         return []
     })
 
@@ -55,7 +55,7 @@
     /**
      * fetching available users
      */
-    const users = useState<UIMenuItems>('availableUsers', () => {
+    const users = useState<UIMenuItem[]>('availableUsers', () => {
         return []
     })
 

@@ -11,7 +11,5 @@
 
 <script lang="ts" setup>
     useUpdateTitle('Settings')
-
-    // states
     const showRawRowData = useState<boolean>('showRawRowData')
 </script>

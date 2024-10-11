@@ -38,10 +38,7 @@
                 :sort="sort"
                 :columns="selectedColumns"
                 :rows="rows"
-                :empty-state="{
-                    icon: 'i-heroicons-circle-stack-20-solid',
-                    label: 'No items.',
-                }"
+                :empty-state="emptyState"
             >
                 <!-- dropdown for raw data -->
                 <template #expand="{ row }" v-if="showRawRowData">
@@ -72,13 +69,22 @@
     // init date picker with the date today
     const dateRange = useState<DateRange>('dateRange')
     const showRawRowData = useState<boolean>('showRawRowData')
-    const isLoading = ref(false)
     const supabase = useSupabaseClient()
+
+    /**
+     * UTable props
+     */
+    const isLoading = ref(false)
     const rows = ref()
     const sort = ref({
         column: 'id',
         direction: 'desc' as const,
     })
+    const emptyState = ref({
+        icon: 'i-heroicons-circle-stack-20-solid',
+        label: 'No items.',
+    })
+
     const selectedColumns = useState<TableColumn[]>('selectedColumns')
     const selectedChannel = useState<UIMenuItem>('selectedChannel')
     const selectedUsers = useState<UIMenuItem[]>('selectedUser')

@@ -23,6 +23,7 @@ declare global {
 		key: string
 		label: string
 		sortable: boolean
+		icon?: string
 	}
 }
 

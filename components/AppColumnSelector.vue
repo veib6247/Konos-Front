@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-    const columns = [
+    const columns: TableColumn[] = [
         {
             key: 'timestamp',
             label: 'Timestamp',

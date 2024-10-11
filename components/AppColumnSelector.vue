@@ -18,25 +18,25 @@
             key: 'timestamp',
             label: 'Timestamp',
             sortable: true,
-            icon: 'heroicons:view-columns-16-solid',
+            icon: 'heroicons:clock-16-solid',
         },
         {
             key: 'command',
             label: 'Command',
             sortable: true,
-            icon: 'heroicons:view-columns-16-solid',
+            icon: 'heroicons:command-line-16-solid',
         },
         {
             key: 'user_name',
             label: 'User Name',
             sortable: true,
-            icon: 'heroicons:view-columns-16-solid',
+            icon: 'heroicons:user-16-solid',
         },
         {
             key: 'text',
-            label: 'User Notes',
+            label: 'Notes',
             sortable: true,
-            icon: 'heroicons:view-columns-16-solid',
+            icon: 'heroicons:document-text-16-solid',
         },
     ]
 

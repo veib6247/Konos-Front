@@ -12,7 +12,9 @@
             >
                 <UVerticalNavigation :links="links" />
             </aside>
-            <div class="customHeight flex w-full flex-col overflow-hidden">
+
+            <!-- page slot -->
+            <div class="customHeight flex w-full flex-col">
                 <slot />
             </div>
         </main>

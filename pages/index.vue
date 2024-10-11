@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full w-full overflow-auto">
+    <div class="h-full w-full">
         <!-- table action -->
         <div
             class="sticky top-0 z-40 flex h-20 w-full flex-row gap-2 border-b border-b-green-300/30 backdrop-blur-lg"
@@ -32,7 +32,7 @@
         </div>
 
         <!-- table -->
-        <div class="h-full min-h-full w-full">
+        <div class="tableHeight w-full overflow-auto">
             <UTable
                 :loading="isLoading"
                 :sort="sort"
@@ -172,3 +172,9 @@
 
     await getData()
 </script>
+
+<style>
+    .tableHeight {
+        height: calc(100dvh - 144px);
+    }
+</style>

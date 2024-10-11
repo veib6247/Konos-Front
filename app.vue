@@ -76,7 +76,7 @@
                     users.value.push({
                         id: item.user_id,
                         label: item.user_name,
-                        icon: 'heroicons:user-circle-16-solid',
+                        icon: 'heroicons:user-16-solid',
                     })
                 }
             }

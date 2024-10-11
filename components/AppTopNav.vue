@@ -27,7 +27,7 @@
     /**
      * go home
      */
-    const logout = async () => {
+    async function logout() {
         supabase.auth.signOut()
         await navigateTo('/login')
     }

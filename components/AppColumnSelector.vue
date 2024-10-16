@@ -32,12 +32,6 @@
             sortable: true,
             icon: 'heroicons:user-16-solid',
         },
-        {
-            key: 'text',
-            label: 'Notes',
-            sortable: true,
-            icon: 'heroicons:document-text-16-solid',
-        },
     ]
 
     const selectedColumns = useState<TableColumn[]>('selectedColumns', () => [])

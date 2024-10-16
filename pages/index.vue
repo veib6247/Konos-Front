@@ -39,6 +39,7 @@
                 :columns="selectedColumns"
                 :rows="rows"
                 :empty-state="emptyState"
+                :ui="ui"
             >
                 <!-- dropdown for raw data -->
                 <template #expand="{ row }" v-if="showRawRowData">
@@ -62,7 +63,6 @@
 
 <script lang="ts" setup>
     import { mkConfig, generateCsv, download } from 'export-to-csv'
-    import AppDatePicker from '~/components/AppDatePicker.vue'
 
     useUpdateTitle('Home')
 
@@ -74,6 +74,11 @@
     /**
      * UTable props
      */
+    const ui = {
+        tr: {
+            base: 'hover:bg-gray-50/5 transition',
+        },
+    }
     const isLoading = ref(false)
     const rows = ref()
     const sort = ref({

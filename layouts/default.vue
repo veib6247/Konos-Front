@@ -10,7 +10,12 @@
             <aside
                 class="w-64 min-w-64 flex-col border-r border-r-green-300/30 px-4 py-4"
             >
-                <UVerticalNavigation :links="links" />
+                <div class="flex flex-col gap-1">
+                    <h1 class="text-xs font-semibold uppercase text-white/40">
+                        Menu
+                    </h1>
+                    <UVerticalNavigation :links="links" />
+                </div>
             </aside>
 
             <!-- page slot -->

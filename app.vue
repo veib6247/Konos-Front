@@ -69,7 +69,7 @@
         users.value = []
 
         try {
-            const { data } = await supabase.from('App Users').select('*')
+            const { data } = await supabase.from('app_users').select('*')
             if (data) {
                 for (const channel of data) {
                     const item = channel as UserItem

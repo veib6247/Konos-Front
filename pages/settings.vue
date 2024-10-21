@@ -133,7 +133,7 @@
                 channel_id: channelId.value,
                 channel_name: channelName.value,
             },
-        ])
+        ] as never) // FIX THISSSSSS!!!
 
         const { data, error } = await query
 
@@ -143,11 +143,10 @@
 
         if (data) {
             console.info(data)
-
-            channelId.value = ''
-            channelName.value = ''
         }
 
+        channelId.value = ''
+        channelName.value = ''
         showModal.value = false
         await loadData()
     }

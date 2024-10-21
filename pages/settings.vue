@@ -52,6 +52,7 @@
                         <UButton
                             label="Save"
                             icon="heroicons:check"
+                            :loading="isSaveButtonLoading"
                             @click="saveChannel"
                         />
                     </div>
@@ -69,6 +70,7 @@
     const showRawRowData = useState<boolean>('showRawRowData')
     const supabase = useSupabaseClient()
     const isTableLoading = ref(true)
+    const isSaveButtonLoading = ref(false)
     const tableName = 'Valid Channels'
     const showModal = ref(false)
     const channelId = ref('')
@@ -128,6 +130,8 @@
     }
 
     async function saveChannel() {
+        isSaveButtonLoading.value = true
+
         const query = supabase.from('Valid Channels').insert([
             {
                 channel_id: channelId.value,
@@ -148,6 +152,8 @@
         channelId.value = ''
         channelName.value = ''
         showModal.value = false
+
+        isSaveButtonLoading.value = false
         await loadData()
     }
 </script>

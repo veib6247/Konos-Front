@@ -11,6 +11,6 @@ export default defineNuxtConfig({
 		transpile: ['@vuepic/vue-datepicker'],
 	},
 	colorMode: {
-		preference: 'light',
+		preference: 'dark',
 	},
 })

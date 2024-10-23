@@ -64,6 +64,7 @@
 <script lang="ts" setup>
     import { mkConfig, generateCsv, download } from 'export-to-csv'
 
+    const devMode = import.meta.env.DEV
     useUpdateTitle('Home')
 
     // init date picker with the date today
@@ -113,15 +114,34 @@
      * loads data into table
      */
     const getData = async () => {
-        if (import.meta.env.DEV) console.group('Get table data')
+        if (devMode) console.group('Get table data')
 
         const tableName = 'Slack Timestamp'
         isLoading.value = true
 
-        // todo: PREFETCH INIT DATA ON APP LEVEL
         try {
-            if (import.meta.env.DEV) console.time('Fetched table contents')
-            let query = supabase
+            selectedUsers.value.length > 0
+                ? await fetchOnSpecificUsers(tableName)
+                : await fetchOnUpdate(tableName)
+        } catch (error) {
+            console.error(error)
+            rows.value = []
+        }
+
+        isLoading.value = false
+
+        if (devMode) console.groupEnd()
+    }
+
+    /**
+     *
+     * @param tableName supabase table name
+     */
+    const fetchOnUpdate = async (tableName: string) => {
+        if (devMode) console.time('Fetched table contents')
+
+        try {
+            const query = supabase
                 .from(tableName)
                 .select('*')
                 .eq('channel_id', selectedChannel.value.id)
@@ -133,56 +153,65 @@
                     'timestamp',
                     `${getFormattedDate(dateRange.value[1])} 23:59:59`
                 )
-            if (import.meta.env.DEV) console.timeEnd('Fetched table contents')
-
-            if (selectedUsers.value.length > 0) {
-                if (import.meta.env.DEV)
-                    console.time('Fetched table contents - specific user(s)')
-
-                const users = []
-                for (const user of selectedUsers.value) {
-                    users.push(user.label)
-                }
-
-                query = supabase
-                    .from(tableName)
-                    .select('*')
-                    .eq('channel_id', selectedChannel.value.id)
-                    .in('user_name', users)
-                    .gte(
-                        'timestamp',
-                        `${getFormattedDate(dateRange.value[0])} 00:00:00`
-                    )
-                    .lte(
-                        'timestamp',
-                        `${getFormattedDate(dateRange.value[1])} 23:59:59`
-                    )
-
-                if (import.meta.env.DEV)
-                    console.timeEnd('Fetched table contents - specific user(s)')
-            }
 
             const { data, error } = await query
             if (error) console.error(error)
+
             rows.value = data
         } catch (error) {
             console.error(error)
-            rows.value = []
-        } finally {
-            isLoading.value = false
         }
 
-        if (import.meta.env.DEV) console.groupEnd()
+        if (devMode) console.timeEnd('Fetched table contents')
+    }
+
+    /**
+     *
+     * @param tableName supabase table name
+     */
+    const fetchOnSpecificUsers = async (tableName: string) => {
+        if (devMode) console.time('Fetched table contents - specific user(s)')
+
+        const users = []
+        for (const user of selectedUsers.value) {
+            users.push(user.label)
+        }
+
+        try {
+            const query = supabase
+                .from(tableName)
+                .select('*')
+                .eq('channel_id', selectedChannel.value.id)
+                .in('user_name', users)
+                .gte(
+                    'timestamp',
+                    `${getFormattedDate(dateRange.value[0])} 00:00:00`
+                )
+                .lte(
+                    'timestamp',
+                    `${getFormattedDate(dateRange.value[1])} 23:59:59`
+                )
+
+            const { data, error } = await query
+            if (error) console.error(error)
+
+            rows.value = data
+        } catch (error) {
+            console.error(error)
+        }
+
+        if (devMode)
+            console.timeEnd('Fetched table contents - specific user(s)')
     }
 
     /**
      *
      */
     const exportData = () => {
-        if (import.meta.env.DEV) console.group('CSV Processing')
+        if (devMode) console.group('CSV Processing')
 
         if ((rows.value as []).length > 1) {
-            if (import.meta.env.DEV) console.time('CVS Conversion')
+            if (devMode) console.time('CVS Conversion')
 
             // init config for export button
             // mkConfig merges your options with the defaults
@@ -191,14 +220,14 @@
             const csv = generateCsv(csvConfig)(rows.value)
             download(csvConfig)(csv)
 
-            if (import.meta.env.DEV) console.timeEnd('CVS Conversion')
+            if (devMode) console.timeEnd('CVS Conversion')
         } else {
             const errorMsg = 'No data to convert to CSV!'
             console.error(errorMsg)
             alert(errorMsg)
         }
 
-        if (import.meta.env.DEV) console.groupEnd()
+        if (devMode) console.groupEnd()
     }
 
     await getData()

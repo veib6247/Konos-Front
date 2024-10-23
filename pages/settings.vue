@@ -97,6 +97,8 @@
     })
 
     async function loadData() {
+        console.time('Load channel list')
+
         isTableLoading.value = true
         rows.value = []
 
@@ -114,6 +116,8 @@
         }
 
         isTableLoading.value = false
+
+        console.timeEnd('Load channel list')
     }
 
     async function deleteSelectedRow(row: ChannelItem) {

@@ -113,11 +113,14 @@
      * loads data into table
      */
     const getData = async () => {
+        if (import.meta.env.DEV) console.group('Get table data')
+
         const tableName = 'Slack Timestamp'
         isLoading.value = true
 
         // todo: PREFETCH INIT DATA ON APP LEVEL
         try {
+            if (import.meta.env.DEV) console.time('Fetched table contents')
             let query = supabase
                 .from(tableName)
                 .select('*')
@@ -130,8 +133,12 @@
                     'timestamp',
                     `${getFormattedDate(dateRange.value[1])} 23:59:59`
                 )
+            if (import.meta.env.DEV) console.timeEnd('Fetched table contents')
 
             if (selectedUsers.value.length > 0) {
+                if (import.meta.env.DEV)
+                    console.time('Fetched table contents - specific user(s)')
+
                 const users = []
                 for (const user of selectedUsers.value) {
                     users.push(user.label)
@@ -150,6 +157,9 @@
                         'timestamp',
                         `${getFormattedDate(dateRange.value[1])} 23:59:59`
                     )
+
+                if (import.meta.env.DEV)
+                    console.timeEnd('Fetched table contents - specific user(s)')
             }
 
             const { data, error } = await query
@@ -161,18 +171,33 @@
         } finally {
             isLoading.value = false
         }
+
+        if (import.meta.env.DEV) console.groupEnd()
     }
 
     /**
      *
      */
     const exportData = () => {
+        if (import.meta.env.DEV) console.group('Processing table data to csv')
+
         // init config for export button
         // mkConfig merges your options with the defaults
         // and returns WithDefaults<ConfigOptions>
+
         const csvConfig = mkConfig({ useKeysAsHeaders: true })
-        const csv = generateCsv(csvConfig)(rows.value)
-        download(csvConfig)(csv)
+        if (rows.value === undefined) {
+            if (import.meta.env.DEV) console.time('CVS Conversion')
+
+            const csv = generateCsv(csvConfig)(rows.value)
+            download(csvConfig)(csv)
+
+            if (import.meta.env.DEV) console.timeEnd('CVS Conversion')
+        } else {
+            alert('No data to convert to CSV!')
+        }
+
+        if (import.meta.env.DEV) console.groupEnd()
     }
 
     await getData()

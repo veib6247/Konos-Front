@@ -179,22 +179,23 @@
      *
      */
     const exportData = () => {
-        if (import.meta.env.DEV) console.group('Processing table data to csv')
+        if (import.meta.env.DEV) console.group('CSV Processing')
 
-        // init config for export button
-        // mkConfig merges your options with the defaults
-        // and returns WithDefaults<ConfigOptions>
-
-        const csvConfig = mkConfig({ useKeysAsHeaders: true })
-        if (rows.value === undefined) {
+        if ((rows.value as []).length > 1) {
             if (import.meta.env.DEV) console.time('CVS Conversion')
 
+            // init config for export button
+            // mkConfig merges your options with the defaults
+            // and returns WithDefaults<ConfigOptions>
+            const csvConfig = mkConfig({ useKeysAsHeaders: true })
             const csv = generateCsv(csvConfig)(rows.value)
             download(csvConfig)(csv)
 
             if (import.meta.env.DEV) console.timeEnd('CVS Conversion')
         } else {
-            alert('No data to convert to CSV!')
+            const errorMsg = 'No data to convert to CSV!'
+            console.error(errorMsg)
+            alert(errorMsg)
         }
 
         if (import.meta.env.DEV) console.groupEnd()

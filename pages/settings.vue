@@ -75,7 +75,6 @@
     const showModal = ref(false)
     const channelId = ref('')
     const channelName = ref('')
-
     const columns = [
         {
             key: 'channel_id',
@@ -96,6 +95,9 @@
         await loadData()
     })
 
+    /**
+     *
+     */
     async function loadData() {
         console.time('Load channel list')
 
@@ -120,6 +122,9 @@
         console.timeEnd('Load channel list')
     }
 
+    /**
+     *
+     */
     async function deleteSelectedRow(row: ChannelItem) {
         const { error } = await supabase
             .from(tableName)
@@ -133,6 +138,9 @@
         await loadData()
     }
 
+    /**
+     *
+     */
     async function saveChannel() {
         isSaveButtonLoading.value = true
 

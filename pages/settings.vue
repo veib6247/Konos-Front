@@ -2,196 +2,87 @@
     <div class="flex h-full w-full flex-col gap-4 overflow-auto p-6">
         <UFormGroup
             size="xs"
-            label="Show expand option to display row JSON data"
+            label="Users"
+            description="Each users are allowed to only view their assigned channel(s)"
         >
-            <UToggle size="xs" v-model="showRawRowData" />
-        </UFormGroup>
-
-        <UFormGroup
-            size="xs"
-            label="Valid Channels"
-            class="w-1/2"
-            description="The following are channels are where the Kronos app has been added to Slack"
-        >
-            <UTable :columns="columns" :loading="isTableLoading" :rows="rows">
-                <template #actions-data="{ row }">
-                    <UButton
-                        color="gray"
-                        variant="ghost"
-                        icon="heroicons:trash"
-                        @click="deleteSelectedRow(row)"
-                    />
+            <UTable
+                :columns="userColumns"
+                :loading="isTableLoading"
+                :rows="userRows"
+            >
+                <template #channels-data="{ row }">
+                    <div class="flex gap-1">
+                        <UBadge v-for="item in row.channels">
+                            {{ item.channelName }}
+                        </UBadge>
+                    </div>
                 </template>
             </UTable>
-
-            <div>
-                <UButton
-                    label="Add new channel"
-                    icon="heroicons:chat-bubble-left-right-16-solid"
-                    @click="showModal = true"
-                />
-            </div>
         </UFormGroup>
-
-        <UModal v-model="showModal">
-            <div class="flex flex-col gap-2 p-6">
-                <h1 class="text-xl font-semibold">Add Channel</h1>
-                <div class="flex flex-col gap-2">
-                    <UFormGroup size="xs" label="ID">
-                        <UInput placeholder="C06AKRJXXXX" v-model="channelId" />
-                    </UFormGroup>
-
-                    <UFormGroup size="xs" label="Name">
-                        <UInput
-                            placeholder="xx-xxxxxxxx"
-                            v-model="channelName"
-                        />
-                    </UFormGroup>
-
-                    <div class="flex flex-row-reverse">
-                        <UButton
-                            label="Save"
-                            icon="heroicons:check"
-                            :loading="isSaveButtonLoading"
-                            @click="saveChannel"
-                        />
-                    </div>
-                </div>
-            </div>
-        </UModal>
     </div>
 </template>
 
 <script lang="ts" setup>
     // composables
     useUpdateTitle('Settings')
-    const isDevMode = import.meta.env.DEV
+
+    // libs
+    const supabase = useSupabaseClient()
 
     // states
-    const showRawRowData = useState<boolean>('showRawRowData')
-    const supabase = useSupabaseClient()
+    const isDevMode = import.meta.env.DEV
     const isTableLoading = ref(true)
-    const isSaveButtonLoading = ref(false)
-    const tableName = 'Valid Channels'
-    const showModal = ref(false)
-    const channelId = ref('')
-    const channelName = ref('')
-    const columns = [
-        {
-            key: 'channel_id',
-            label: 'ID',
-        },
-        {
-            key: 'channel_name',
-            label: 'Name',
-        },
-        {
-            key: 'actions',
-        },
+    const userColumns = [
+        { key: 'id', label: 'ID' },
+        { key: 'email', label: 'Email' },
+        { key: 'channels', label: 'Channels' },
     ]
-    const rows = ref([])
+    const userRows = ref<UserRowItem[]>([])
 
+    /**
+     *
+     */
     onMounted(async () => {
-        await loadData()
         await getUserList()
     })
 
     /**
      *
      */
-    async function loadData() {
-        console.time('Load channel list')
-
+    async function getUserList() {
         isTableLoading.value = true
-        rows.value = []
 
-        const query = supabase.from(tableName).select('*')
-        const { data, error } = await query
+        if (isDevMode) console.time('Fetch user list')
+        let channelList: TableChannelObject
 
-        if (error) {
-            console.error(error)
-        }
+        try {
+            const response = await fetch('/api/getUsersList')
+            if (response.ok) {
+                const data = await response.json()
 
-        if (data) {
-            for (const item of data) {
-                rows.value.push(item)
+                for (const user of data) {
+                    const { data } = await supabase
+                        .from('assigned_channels')
+                        .select('channels')
+                        .eq('user_id', user.id)
+
+                    if (data) {
+                        channelList = data[0].channels as TableChannelObject
+                        const rowItem: UserRowItem = {
+                            id: user.id,
+                            email: user.email,
+                            channels: channelList.channels,
+                        }
+
+                        userRows.value.push(rowItem)
+                    }
+                }
             }
+        } catch (error) {
+            console.error(error)
         }
 
         isTableLoading.value = false
-
-        console.timeEnd('Load channel list')
-    }
-
-    /**
-     *
-     */
-    async function deleteSelectedRow(row: ChannelItem) {
-        const { error } = await supabase
-            .from(tableName)
-            .delete()
-            .eq('channel_id', row.channel_id)
-
-        if (error) {
-            console.error(error)
-        }
-
-        await loadData()
-    }
-
-    /**
-     *
-     */
-    async function saveChannel() {
-        isSaveButtonLoading.value = true
-        let currentUserId = ''
-
-        const { data: currentUser, error: currentUserError } =
-            await supabase.auth.getUser()
-
-        if (currentUserError) console.error(currentUserError)
-
-        if (currentUser) {
-            if (currentUser.user) currentUserId = currentUser.user.id
-        }
-
-        const query = supabase.from('Valid Channels').insert([
-            {
-                channel_id: channelId.value,
-                channel_name: channelName.value,
-                channel_creator: currentUserId,
-            },
-        ] as never) // FIX THISSSSSS!!!
-
-        const { data, error } = await query
-
-        if (error) {
-            console.error(error)
-        }
-
-        if (data) {
-            console.info(data)
-        }
-
-        channelId.value = ''
-        channelName.value = ''
-        showModal.value = false
-
-        isSaveButtonLoading.value = false
-        await loadData()
-    }
-
-    /**
-     *
-     */
-    async function getUserList() {
-        if (isDevMode) console.time('Fetch user list')
-
-        const res = await fetch('/api/getUsersList')
-        const data = await res.json()
-
-        console.info(data)
-
         if (isDevMode) console.timeEnd('Fetch user list')
     }
 </script>

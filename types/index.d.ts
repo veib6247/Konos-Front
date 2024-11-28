@@ -25,6 +25,21 @@ declare global {
 		sortable: boolean
 		icon?: string
 	}
+
+	type TableChannelItem = {
+		channelId: string
+		channelName: string
+	}
+
+	type TableChannelObject = {
+		channels: TableChannelItem[]
+	}
+
+	type UserRowItem = {
+		id: string
+		email: string
+		channels: TableChannelItem[]
+	}
 }
 
 export {}

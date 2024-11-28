@@ -41,13 +41,6 @@
                 :empty-state="emptyState"
                 :ui="ui"
             >
-                <!-- dropdown for raw data -->
-                <template #expand="{ row }" v-if="showRawRowData">
-                    <div class="p-4 text-xs">
-                        <pre>{{ row }}</pre>
-                    </div>
-                </template>
-
                 <!-- User notes data -->
                 <template #text-data="{ row }">
                     <UTooltip :text="row.text">
@@ -69,7 +62,6 @@
 
     // init date picker with the date today
     const dateRange = useState<DateRange>('dateRange')
-    const showRawRowData = useState<boolean>('showRawRowData')
     const supabase = useSupabaseClient()
 
     /**

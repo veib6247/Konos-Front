@@ -65,6 +65,7 @@
 <script lang="ts" setup>
     // composables
     useUpdateTitle('Settings')
+    const isDevMode = import.meta.env.DEV
 
     // states
     const showRawRowData = useState<boolean>('showRawRowData')
@@ -93,6 +94,7 @@
 
     onMounted(async () => {
         await loadData()
+        await getUserList()
     })
 
     /**
@@ -167,5 +169,19 @@
 
         isSaveButtonLoading.value = false
         await loadData()
+    }
+
+    /**
+     *
+     */
+    async function getUserList() {
+        if (isDevMode) console.time('Fetch user list')
+
+        const res = await fetch('/api/getUsersList')
+        const data = await res.json()
+
+        console.trace(data)
+
+        if (isDevMode) console.timeEnd('Fetch user list')
     }
 </script>

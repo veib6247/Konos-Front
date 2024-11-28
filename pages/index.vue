@@ -64,7 +64,7 @@
 <script lang="ts" setup>
     import { mkConfig, generateCsv, download } from 'export-to-csv'
 
-    const devMode = import.meta.env.DEV
+    const isDevMode = import.meta.env.DEV
     useUpdateTitle('Home')
 
     // init date picker with the date today
@@ -114,7 +114,7 @@
      * loads data into table
      */
     const getData = async () => {
-        if (devMode) console.group('Get table data')
+        if (isDevMode) console.group('Get table data')
 
         const tableName = 'Slack Timestamp'
         isLoading.value = true
@@ -130,7 +130,7 @@
 
         isLoading.value = false
 
-        if (devMode) console.groupEnd()
+        if (isDevMode) console.groupEnd()
     }
 
     /**
@@ -138,7 +138,7 @@
      * @param tableName supabase table name
      */
     const fetchOnUpdate = async (tableName: string) => {
-        if (devMode) console.time('Fetched table contents')
+        if (isDevMode) console.time('Fetched table contents')
 
         try {
             const query = supabase
@@ -162,7 +162,7 @@
             console.error(error)
         }
 
-        if (devMode) console.timeEnd('Fetched table contents')
+        if (isDevMode) console.timeEnd('Fetched table contents')
     }
 
     /**
@@ -170,7 +170,7 @@
      * @param tableName supabase table name
      */
     const fetchOnSpecificUsers = async (tableName: string) => {
-        if (devMode) console.time('Fetched table contents - specific user(s)')
+        if (isDevMode) console.time('Fetched table contents - specific user(s)')
 
         const users = []
         for (const user of selectedUsers.value) {
@@ -200,7 +200,7 @@
             console.error(error)
         }
 
-        if (devMode)
+        if (isDevMode)
             console.timeEnd('Fetched table contents - specific user(s)')
     }
 
@@ -208,10 +208,10 @@
      *
      */
     const exportData = () => {
-        if (devMode) console.group('CSV Processing')
+        if (isDevMode) console.group('CSV Processing')
 
         if ((rows.value as []).length > 1) {
-            if (devMode) console.time('CVS Conversion')
+            if (isDevMode) console.time('CVS Conversion')
 
             // init config for export button
             // mkConfig merges your options with the defaults
@@ -220,14 +220,14 @@
             const csv = generateCsv(csvConfig)(rows.value)
             download(csvConfig)(csv)
 
-            if (devMode) console.timeEnd('CVS Conversion')
+            if (isDevMode) console.timeEnd('CVS Conversion')
         } else {
             const errorMsg = 'No data to convert to CSV!'
             console.error(errorMsg)
             alert(errorMsg)
         }
 
-        if (devMode) console.groupEnd()
+        if (isDevMode) console.groupEnd()
     }
 
     await getData()

@@ -89,7 +89,6 @@
             key: 'actions',
         },
     ]
-
     const rows = ref([])
 
     onMounted(async () => {
@@ -145,11 +144,22 @@
      */
     async function saveChannel() {
         isSaveButtonLoading.value = true
+        let currentUserId = ''
+
+        const { data: currentUser, error: currentUserError } =
+            await supabase.auth.getUser()
+
+        if (currentUserError) console.error(currentUserError)
+
+        if (currentUser) {
+            if (currentUser.user) currentUserId = currentUser.user.id
+        }
 
         const query = supabase.from('Valid Channels').insert([
             {
                 channel_id: channelId.value,
                 channel_name: channelName.value,
+                channel_creator: currentUserId,
             },
         ] as never) // FIX THISSSSSS!!!
 
@@ -180,7 +190,7 @@
         const res = await fetch('/api/getUsersList')
         const data = await res.json()
 
-        console.trace(data)
+        console.info(data)
 
         if (isDevMode) console.timeEnd('Fetch user list')
     }

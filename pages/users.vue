@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
     // composables
-    useUpdateTitle('Settings')
+    useUpdateTitle('Users')
 
     // libs
     const supabase = useSupabaseClient()

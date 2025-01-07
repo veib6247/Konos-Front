@@ -34,9 +34,9 @@
             to: '/',
         },
         {
-            label: 'Setting',
-            icon: 'heroicons:cog-6-tooth-16-solid',
-            to: '/settings',
+            label: 'Users',
+            icon: 'heroicons:users-16-solid',
+            to: '/users',
         },
     ]
 </script>

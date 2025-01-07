@@ -31,13 +31,15 @@ declare global {
 		channelName: string
 	}
 
-	type TableChannelObject = {
+	type TableUserObject = {
+		type: string
 		channels: TableChannelItem[]
 	}
 
 	type UserRowItem = {
 		id: string
 		email: string
+		type: string
 		channels: TableChannelItem[]
 	}
 }

@@ -35,6 +35,7 @@
     const userColumns = [
         { key: 'id', label: 'ID' },
         { key: 'email', label: 'Email' },
+        { key: 'type', label: 'Type' },
         { key: 'channels', label: 'Channels' },
     ]
     const userRows = ref<UserRowItem[]>([])
@@ -53,7 +54,6 @@
         isTableLoading.value = true
 
         if (isDevMode) console.time('Fetch user list')
-        let channelList: TableChannelObject
 
         try {
             const response = await fetch('/api/getUsersList')
@@ -62,16 +62,19 @@
 
                 for (const user of data) {
                     const { data } = await supabase
-                        .from('assigned_channels')
-                        .select('channels')
+                        .from('user_privileges')
+                        .select('privileges')
                         .eq('user_id', user.id)
 
                     if (data) {
-                        channelList = data[0].channels as TableChannelObject
+                        const userPrivileges: TableUserObject =
+                            data[0].privileges
+
                         const rowItem: UserRowItem = {
                             id: user.id,
                             email: user.email,
-                            channels: channelList.channels,
+                            type: userPrivileges.type,
+                            channels: userPrivileges.channels,
                         }
 
                         userRows.value.push(rowItem)

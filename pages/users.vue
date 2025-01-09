@@ -239,13 +239,14 @@
 
                 if (!data.isAddUserSuccess) {
                     alert(data.result.msg)
+                } else {
+                    isAddUserModalOpen.value = false
                 }
             }
         } catch (error) {
             console.error(error)
         } finally {
             isSaveButtonLoading.value = false
-            isAddUserModalOpen.value = false
         }
     }
 </script>

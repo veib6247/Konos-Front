@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
 		body: JSON.stringify({
 			email: body.email,
 			data: {
-				username: 'fukazer0',
 				role: body.type,
 				channels: body.channels,
 			},

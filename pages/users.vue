@@ -100,7 +100,13 @@
 
                 <template #footer>
                     <div class="flex flex-row-reverse">
-                        <UButton size="xs" @click="saveNewUser"> Save </UButton>
+                        <UButton
+                            :loading="isSaveButtonLoading"
+                            size="xs"
+                            @click="saveNewUser"
+                        >
+                            Save
+                        </UButton>
                     </div>
                 </template>
             </UCard>
@@ -132,6 +138,7 @@
     const channels = ref<TableChannelItem[]>([
         { channelName: '', channelId: '' },
     ])
+    const isSaveButtonLoading = ref(false)
 
     /**
      *
@@ -198,7 +205,9 @@
     /**
      * Save new user
      */
-    function saveNewUser() {
+    async function saveNewUser() {
+        isSaveButtonLoading.value = true
+
         if (userEmail.value === '') {
             alert('Email cannot be empty!')
             return
@@ -211,7 +220,28 @@
             }
         }
 
-        console.info('works!')
-        isAddUserModalOpen.value = false
+        try {
+            const res = await fetch('/api/inviteNewUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: userEmail.value,
+                    type: selectedUserType.value,
+                    channels: channels.value,
+                }),
+            })
+
+            if (res.ok) {
+                const data = await res.json()
+                console.info(data)
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            isSaveButtonLoading.value = false
+            isAddUserModalOpen.value = false
+        }
     }
 </script>

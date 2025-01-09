@@ -1,7 +1,11 @@
 <template>
     <div class="flex h-full w-full flex-col gap-4 overflow-auto p-6">
-        <div class="flex flex-row-reverse gap-1">
-            <UButton icon="i-heroicons-plus" size="xs" @click="addUser">
+        <div class="flex gap-1">
+            <UButton
+                icon="i-heroicons-plus"
+                size="xs"
+                @click="isAddUserModalOpen = true"
+            >
                 Add New User
             </UButton>
         </div>
@@ -152,12 +156,5 @@
 
         isTableLoading.value = false
         if (isDevMode) console.timeEnd('Fetch user list')
-    }
-
-    /**
-     *
-     */
-    function addUser() {
-        isAddUserModalOpen.value = true
     }
 </script>

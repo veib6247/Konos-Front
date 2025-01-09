@@ -236,6 +236,10 @@
             if (res.ok) {
                 const data = await res.json()
                 console.info(data)
+
+                if (!data.isAddUserSuccess) {
+                    alert(data.result.msg)
+                }
             }
         } catch (error) {
             console.error(error)

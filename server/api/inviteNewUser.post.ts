@@ -27,16 +27,29 @@ export default defineEventHandler(async (event) => {
 			Authorization: `Bearer ${supabaseServiceRoleKey}`,
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ email: body.email }),
+		body: JSON.stringify({
+			email: body.email,
+			data: {
+				username: 'fukazer0',
+				role: body.type,
+				channels: body.channels,
+			},
+		}),
 	})
 
 	if (!response.ok) {
-		const errorBody = await response.text()
-		throw new Error(
-			`HTTP error! status: ${response.status}, body: ${errorBody}`,
-		)
+		const errorBody = await response.json()
+		console.error(errorBody)
+
+		return {
+			isAddUserSuccess: false,
+			result: errorBody,
+		}
 	}
 
 	const data = await response.json()
-	return data
+	return {
+		isAddUserSuccess: true,
+		result: data,
+	}
 })

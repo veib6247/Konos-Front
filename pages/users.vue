@@ -186,12 +186,16 @@
      * Save new user
      */
     function saveNewUser() {
-        if (
-            channels.value[0].channelName === '' ||
-            channels.value[0].channelId === ''
-        ) {
-            alert('Please fill in the channel name and channel ID')
+        if (userEmail.value === '') {
+            alert('Email cannot be empty!')
             return
+        }
+
+        for (const channel of channels.value) {
+            if (channel.channelName === '' || channel.channelId === '') {
+                alert('Channel Name/ID cannot be empty!')
+                return
+            }
         }
 
         console.info('works!')

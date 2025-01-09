@@ -4,7 +4,7 @@
             <UButton
                 icon="i-heroicons-plus"
                 size="xs"
-                @click="isAddUserModalOpen = true"
+                @click="openAddUserModal"
             >
                 Add New User
             </UButton>
@@ -41,7 +41,7 @@
 
                     <UFormGroup size="sm" label="Type">
                         <USelect
-                            v-model="defaultUserType"
+                            v-model="selectedUserType"
                             :options="userTypes"
                         />
                     </UFormGroup>
@@ -128,7 +128,7 @@
     const userRows = ref<UserRowItem[]>([])
     const userEmail = ref('')
     const userTypes = ['admin', 'basic']
-    const defaultUserType = ref(userTypes[1])
+    const selectedUserType = ref(userTypes[1])
     const channels = ref<TableChannelItem[]>([
         { channelName: '', channelId: '' },
     ])
@@ -180,6 +180,19 @@
 
         isTableLoading.value = false
         if (isDevMode) console.timeEnd('Fetch user list')
+    }
+
+    /**
+     *
+     */
+    function openAddUserModal() {
+        // reset form first
+        userEmail.value = ''
+        selectedUserType.value = userTypes[1]
+        channels.value = [{ channelName: '', channelId: '' }]
+
+        //
+        isAddUserModalOpen.value = true
     }
 
     /**

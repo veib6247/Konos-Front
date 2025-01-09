@@ -27,13 +27,7 @@
         </UFormGroup>
 
         <UModal v-model="isAddUserModalOpen">
-            <UCard
-                class="h-[490px] max-h-[490px] overflow-auto"
-                :ui="{
-                    ring: '',
-                    divide: 'divide-y divide-gray-100 dark:divide-gray-800',
-                }"
-            >
+            <UCard class="overflow-auto">
                 <template #header> Add New User </template>
 
                 <div class="flex flex-col gap-6">
@@ -56,7 +50,7 @@
                         <div class="flex flex-col gap-4 p-4">
                             <div
                                 class="flex flex-row gap-1"
-                                v-for="channel in channels"
+                                v-for="(channel, index) in channels"
                             >
                                 <UFormGroup
                                     class="w-full"
@@ -75,28 +69,30 @@
                                         v-model="channel.channelId"
                                     />
                                 </UFormGroup>
-                            </div>
 
-                            <div class="flex flex-row-reverse gap-1">
-                                <UButton
-                                    square
-                                    size="xs"
-                                    icon="i-heroicons-plus"
-                                    @click="
-                                        channels.push({
-                                            channelName: '',
-                                            channelId: '',
-                                        })
-                                    "
-                                />
+                                <div class="flex flex-col-reverse">
+                                    <UButton
+                                        square
+                                        size="xs"
+                                        icon="i-heroicons-minus"
+                                        @click="channels.splice(index, 1)"
+                                        v-if="channels.length > 1"
+                                    />
+                                </div>
 
-                                <UButton
-                                    square
-                                    size="xs"
-                                    icon="i-heroicons-minus"
-                                    @click="channels.pop()"
-                                    v-if="channels.length > 1"
-                                />
+                                <div class="flex flex-col-reverse">
+                                    <UButton
+                                        square
+                                        size="xs"
+                                        icon="i-heroicons-plus"
+                                        @click="
+                                            channels.push({
+                                                channelName: '',
+                                                channelId: '',
+                                            })
+                                        "
+                                    />
+                                </div>
                             </div>
                         </div>
                     </UFormGroup>
@@ -104,7 +100,7 @@
 
                 <template #footer>
                     <div class="flex flex-row-reverse">
-                        <UButton size="xs"> Save </UButton>
+                        <UButton size="xs" @click="saveNewUser"> Save </UButton>
                     </div>
                 </template>
             </UCard>
@@ -136,7 +132,6 @@
     const channels = ref<TableChannelItem[]>([
         { channelName: '', channelId: '' },
     ])
-    // TODO: Add a new channel item
 
     /**
      *
@@ -185,5 +180,21 @@
 
         isTableLoading.value = false
         if (isDevMode) console.timeEnd('Fetch user list')
+    }
+
+    /**
+     * Save new user
+     */
+    function saveNewUser() {
+        if (
+            channels.value[0].channelName === '' ||
+            channels.value[0].channelId === ''
+        ) {
+            alert('Please fill in the channel name and channel ID')
+            return
+        }
+
+        console.info('works!')
+        isAddUserModalOpen.value = false
     }
 </script>

@@ -28,6 +28,7 @@
 
         <UModal v-model="isAddUserModalOpen">
             <UCard
+                class="h-[490px] max-h-[490px] overflow-auto"
                 :ui="{
                     ring: '',
                     divide: 'divide-y divide-gray-100 dark:divide-gray-800',
@@ -62,12 +63,40 @@
                                     size="xs"
                                     label="Name"
                                 >
-                                    <UInput v-model="channel.channelName" />
+                                    <UInput
+                                        placeholder="td-attendance"
+                                        v-model="channel.channelName"
+                                    />
                                 </UFormGroup>
 
                                 <UFormGroup class="w-full" size="xs" label="ID">
-                                    <UInput v-model="channel.channelId" />
+                                    <UInput
+                                        placeholder="C069FH66QJ3"
+                                        v-model="channel.channelId"
+                                    />
                                 </UFormGroup>
+                            </div>
+
+                            <div class="flex flex-row-reverse gap-1">
+                                <UButton
+                                    square
+                                    size="xs"
+                                    icon="i-heroicons-plus"
+                                    @click="
+                                        channels.push({
+                                            channelName: '',
+                                            channelId: '',
+                                        })
+                                    "
+                                />
+
+                                <UButton
+                                    square
+                                    size="xs"
+                                    icon="i-heroicons-minus"
+                                    @click="channels.pop()"
+                                    v-if="channels.length > 1"
+                                />
                             </div>
                         </div>
                     </UFormGroup>

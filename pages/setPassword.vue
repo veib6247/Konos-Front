@@ -65,6 +65,7 @@
     const params = new URLSearchParams(hash)
     const errMsg = ref('')
     const token = params.get('access_token')
+    const toast = useToast()
     const schema = z.object({
         password: z.string().min(8, 'Must be at least 8 characters'),
     })
@@ -100,6 +101,11 @@
                 return
             }
 
+            toast.add({
+                title: 'Password Updated',
+                description: 'You may now login with your new password.',
+                icon: 'i-heroicons-check-badge',
+            })
             await navigateTo('/')
         } catch (error) {
             const msg = 'Error resetting password:'

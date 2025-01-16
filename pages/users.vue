@@ -118,9 +118,6 @@
     // composables
     useUpdateTitle('Users')
 
-    // libs
-    const supabase = useSupabaseClient()
-
     // states
     const isDevMode = import.meta.env.DEV
     const isTableLoading = ref(true)
@@ -139,6 +136,7 @@
         { channelName: '', channelId: '' },
     ])
     const isSaveButtonLoading = ref(false)
+    const toast = useToast()
 
     /**
      *
@@ -233,6 +231,11 @@
                 }
 
                 isAddUserModalOpen.value = false
+                toast.add({
+                    title: 'New User Invited',
+                    description: 'An invite email has been sent to the user.',
+                    icon: 'i-heroicons-check-badge',
+                })
             }
         } catch (error) {
             console.error('Failed to add new user', error)

@@ -61,6 +61,7 @@
         layout: 'un-auth',
     })
 
+    const isDevMode = import.meta.env.DEV
     const hash = useRoute().hash.substring(1)
     const params = new URLSearchParams(hash)
     const errMsg = ref('')
@@ -97,6 +98,16 @@
                 const response = await data.json()
                 errMsg.value = response
                 console.error('Error setting password:', response)
+
+                return
+            }
+
+            const response = await data.json()
+            if (!response.isUpdatePasswordSuccess) {
+                errMsg.value =
+                    'Failed to update password, please check your input.'
+                if (isDevMode)
+                    console.error('Error setting password:', response)
 
                 return
             }

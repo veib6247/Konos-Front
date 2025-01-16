@@ -13,4 +13,12 @@ export default defineNuxtConfig({
 	colorMode: {
 		preference: 'dark',
 	},
+
+	supabase: {
+		redirectOptions: {
+			login: '/login',
+			callback: '/confirm',
+			exclude: ['/setPassword'],
+		},
+	},
 })

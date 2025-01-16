@@ -8,9 +8,9 @@ if (!supabaseKey) {
 	throw new Error('SUPABASE_KEY not configured!')
 }
 
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_KEY
 if (!supabaseServiceRoleKey) {
-	throw new Error('SUPABASE_SERVICE_ROLE_KEY not configured!')
+	throw new Error('SUPABASE_SERVICE_KEY not configured!')
 }
 
 /**

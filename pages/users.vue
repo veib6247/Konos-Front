@@ -151,6 +151,7 @@
      *
      */
     async function getUserList() {
+        userRows.value = []
         isTableLoading.value = true
 
         if (isDevMode) console.time('Fetch user list')
@@ -161,28 +162,18 @@
                 const data = await response.json()
 
                 for (const user of data) {
-                    const { data } = await supabase
-                        .from('user_privileges')
-                        .select('privileges')
-                        .eq('user_id', user.id)
-
-                    if (data) {
-                        const userPrivileges: TableUserObject =
-                            data[0].privileges
-
-                        const rowItem: UserRowItem = {
-                            id: user.id,
-                            email: user.email,
-                            type: userPrivileges.type,
-                            channels: userPrivileges.channels,
-                        }
-
-                        userRows.value.push(rowItem)
+                    const rowItem: UserRowItem = {
+                        id: user.id,
+                        email: user.email,
+                        type: user.user_metadata.role,
+                        channels: user.user_metadata.channels,
                     }
+
+                    userRows.value.push(rowItem)
                 }
             }
         } catch (error) {
-            console.error(error)
+            console.error('Failed to fetch user list', error)
         }
 
         isTableLoading.value = false
@@ -235,18 +226,19 @@
 
             if (res.ok) {
                 const data = await res.json()
-                console.info(data)
 
                 if (!data.isAddUserSuccess) {
                     alert(data.result.msg)
-                } else {
-                    isAddUserModalOpen.value = false
+                    return
                 }
+
+                isAddUserModalOpen.value = false
             }
         } catch (error) {
-            console.error(error)
+            console.error('Failed to add new user', error)
         } finally {
             isSaveButtonLoading.value = false
+            getUserList()
         }
     }
 </script>

@@ -23,9 +23,36 @@
                         </UBadge>
                     </div>
                 </template>
+
+                <template #actions-data="{ row }">
+                    <div class="flex gap-2">
+                        <UButton
+                            square
+                            size="xs"
+                            icon="i-heroicons-pencil"
+                            color="gray"
+                            variant="solid"
+                            @click="editUser(row.id)"
+                        />
+                        <UButton
+                            square
+                            size="xs"
+                            icon="i-heroicons-trash"
+                            color="red"
+                            variant="solid"
+                            @click="
+                                openDeleteUserModal({
+                                    id: row.id,
+                                    email: row.email,
+                                })
+                            "
+                        />
+                    </div>
+                </template>
             </UTable>
         </UFormGroup>
 
+        <!-- MODAL: ADD USER -->
         <UModal v-model="isAddUserModalOpen">
             <UCard class="overflow-auto">
                 <template #header> Add New User </template>
@@ -111,6 +138,48 @@
                 </template>
             </UCard>
         </UModal>
+
+        <!-- MODAL: CONFIRM USER DELETION -->
+        <UModal v-model="isDeleteUserModalOpen">
+            <UCard
+                :ui="{
+                    ring: '',
+                    divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+                }"
+            >
+                <template #header>
+                    <h1>Delete User</h1>
+                </template>
+
+                <div class="text-sm">
+                    <p>
+                        Are you sure you want to delete user
+                        <span class="font-medium">
+                            {{ selectedUser.email }} </span
+                        >?
+                    </p>
+                </div>
+
+                <template #footer>
+                    <div class="flex flex-row-reverse gap-2">
+                        <UButton
+                            size="xs"
+                            color="red"
+                            @click="deleteUser(selectedUser.id)"
+                        >
+                            Delete
+                        </UButton>
+
+                        <UButton
+                            size="xs"
+                            @click="isDeleteUserModalOpen = false"
+                        >
+                            Cancel
+                        </UButton>
+                    </div>
+                </template>
+            </UCard>
+        </UModal>
     </div>
 </template>
 
@@ -118,15 +187,26 @@
     // composables
     useUpdateTitle('Users')
 
+    type selectedUser = {
+        id: string
+        email: string
+    }
+
     // states
     const isDevMode = import.meta.env.DEV
     const isTableLoading = ref(true)
     const isAddUserModalOpen = ref(false)
+    const isDeleteUserModalOpen = ref(false)
+    const selectedUser = ref<selectedUser>({
+        id: '',
+        email: '',
+    })
     const userColumns = [
         { key: 'id', label: 'ID' },
         { key: 'email', label: 'Email' },
         { key: 'type', label: 'Type' },
         { key: 'channels', label: 'Channels' },
+        { key: 'actions', label: 'Actions' },
     ]
     const userRows = ref<UserRowItem[]>([])
     const userEmail = ref('')
@@ -243,5 +323,57 @@
             isSaveButtonLoading.value = false
             getUserList()
         }
+    }
+
+    /**
+     * sets the selected row from the table to be deleted
+     */
+    function openDeleteUserModal(user: selectedUser) {
+        selectedUser.value = user
+        isDeleteUserModalOpen.value = true
+    }
+
+    /**
+     *
+     */
+    async function deleteUser(userId: string) {
+        try {
+            const response = await fetch(`/api/deleteUser/${userId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+
+            if (!response.ok) {
+                console.error('Failed to delete user', userId)
+                return
+            }
+
+            const data = await response.json()
+            if (data.status !== 200) {
+                console.error('Failed to delete user', data)
+                return
+            }
+
+            if (isDevMode) console.info('User deleted', data)
+            isDeleteUserModalOpen.value = false
+            await getUserList()
+            toast.add({
+                title: 'User Deleted Successfully',
+                description: 'The selected user has been deleted.',
+                icon: 'i-heroicons-check-badge',
+            })
+            return
+        } catch (error) {
+            console.error('Failed to delete user', error)
+        }
+    }
+
+    /**
+     *
+     */
+    function editUser(userId: string) {
+        console.info('Edit user', userId)
     }
 </script>

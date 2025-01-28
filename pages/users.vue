@@ -83,7 +83,7 @@
                     </UFormGroup>
 
                     <UFormGroup size="sm" label="Channels">
-                        <div class="flex flex-col gap-4 p-4">
+                        <div class="flex flex-col gap-4">
                             <div
                                 class="flex flex-row gap-1"
                                 v-for="(channel, index) in channels"
@@ -173,57 +173,64 @@
                             :options="userTypes"
                         />
                     </UFormGroup>
-                </div>
 
-                <UFormGroup size="sm" label="Channels">
-                    <div class="flex flex-col gap-4 p-4">
-                        <div
-                            class="flex flex-row gap-1"
-                            v-for="(ch, index) in selectedUser.channels"
-                        >
-                            <UFormGroup class="w-full" size="xs" label="Name">
-                                <UInput
-                                    placeholder="td-attendance"
-                                    v-model="ch.channelName"
-                                />
-                            </UFormGroup>
-
-                            <UFormGroup class="w-full" size="xs" label="ID">
-                                <UInput
-                                    placeholder="C069FH66QJ3"
-                                    v-model="ch.channelId"
-                                />
-                            </UFormGroup>
-
-                            <div class="flex flex-col-reverse">
-                                <UButton
-                                    square
+                    <UFormGroup size="sm" label="Channels">
+                        <div class="flex flex-col gap-4">
+                            <div
+                                class="flex flex-row gap-1"
+                                v-for="(ch, index) in selectedUser.channels"
+                            >
+                                <UFormGroup
+                                    class="w-full"
                                     size="xs"
-                                    icon="i-heroicons-plus"
-                                    @click="
-                                        selectedUser.channels.push({
-                                            channelName: '',
-                                            channelId: '',
-                                        })
-                                    "
-                                />
-                            </div>
+                                    label="Name"
+                                >
+                                    <UInput
+                                        placeholder="td-attendance"
+                                        v-model="ch.channelName"
+                                    />
+                                </UFormGroup>
 
-                            <div class="flex flex-col-reverse">
-                                <UButton
-                                    square
-                                    color="red"
-                                    size="xs"
-                                    icon="i-heroicons-minus"
-                                    @click="
-                                        selectedUser.channels.splice(index, 1)
-                                    "
-                                    v-if="selectedUser.channels.length > 1"
-                                />
+                                <UFormGroup class="w-full" size="xs" label="ID">
+                                    <UInput
+                                        placeholder="C069FH66QJ3"
+                                        v-model="ch.channelId"
+                                    />
+                                </UFormGroup>
+
+                                <div class="flex flex-col-reverse">
+                                    <UButton
+                                        square
+                                        size="xs"
+                                        icon="i-heroicons-plus"
+                                        @click="
+                                            selectedUser.channels.push({
+                                                channelName: '',
+                                                channelId: '',
+                                            })
+                                        "
+                                    />
+                                </div>
+
+                                <div class="flex flex-col-reverse">
+                                    <UButton
+                                        square
+                                        color="red"
+                                        size="xs"
+                                        icon="i-heroicons-minus"
+                                        @click="
+                                            selectedUser.channels.splice(
+                                                index,
+                                                1
+                                            )
+                                        "
+                                        v-if="selectedUser.channels.length > 1"
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </UFormGroup>
+                    </UFormGroup>
+                </div>
 
                 <template #footer>
                     <div class="flex flex-row-reverse">
@@ -231,7 +238,7 @@
                             <UButton
                                 :loading="isSaveButtonLoading"
                                 size="xs"
-                                @click="console.info('Edit user')"
+                                @click="saveEditedUser"
                             >
                                 Save
                             </UButton>
@@ -485,5 +492,12 @@
     function openEditUserModal(user: SelectedUser) {
         selectedUser.value = user
         isEditUserModalOpen.value = true
+    }
+
+    /**
+     *
+     */
+    function saveEditedUser() {
+        console.info(selectedUser.value)
     }
 </script>

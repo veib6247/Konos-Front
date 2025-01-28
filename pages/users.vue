@@ -175,6 +175,56 @@
                     </UFormGroup>
                 </div>
 
+                <UFormGroup size="sm" label="Channels">
+                    <div class="flex flex-col gap-4 p-4">
+                        <div
+                            class="flex flex-row gap-1"
+                            v-for="(channel, index) in selectedUser.channels"
+                        >
+                            <UFormGroup class="w-full" size="xs" label="Name">
+                                <UInput
+                                    placeholder="td-attendance"
+                                    v-model="channel.channelName"
+                                />
+                            </UFormGroup>
+
+                            <UFormGroup class="w-full" size="xs" label="ID">
+                                <UInput
+                                    placeholder="C069FH66QJ3"
+                                    v-model="channel.channelId"
+                                />
+                            </UFormGroup>
+
+                            <div class="flex flex-col-reverse">
+                                <UButton
+                                    square
+                                    size="xs"
+                                    icon="i-heroicons-plus"
+                                    @click="
+                                        selectedUser.channels.push({
+                                            channelName: '',
+                                            channelId: '',
+                                        })
+                                    "
+                                />
+                            </div>
+
+                            <div class="flex flex-col-reverse">
+                                <UButton
+                                    square
+                                    color="red"
+                                    size="xs"
+                                    icon="i-heroicons-minus"
+                                    @click="
+                                        selectedUser.channels.splice(index, 1)
+                                    "
+                                    v-if="selectedUser.channels.length > 1"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </UFormGroup>
+
                 <template #footer>
                     <div class="flex flex-row-reverse"></div>
                 </template>
@@ -233,7 +283,7 @@
         id: string
         email: string
         type: string
-        channels: string[]
+        channels: TableChannelItem[]
     }
 
     // states
@@ -424,7 +474,6 @@
      */
     function openEditUserModal(user: selectedUser) {
         selectedUser.value = user
-        console.info('Edit user', user)
         isEditUserModalOpen.value = true
     }
 </script>

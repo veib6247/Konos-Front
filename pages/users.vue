@@ -179,19 +179,19 @@
                     <div class="flex flex-col gap-4 p-4">
                         <div
                             class="flex flex-row gap-1"
-                            v-for="(channel, index) in selectedUser.channels"
+                            v-for="(ch, index) in selectedUser.channels"
                         >
                             <UFormGroup class="w-full" size="xs" label="Name">
                                 <UInput
                                     placeholder="td-attendance"
-                                    v-model="channel.channelName"
+                                    v-model="ch.channelName"
                                 />
                             </UFormGroup>
 
                             <UFormGroup class="w-full" size="xs" label="ID">
                                 <UInput
                                     placeholder="C069FH66QJ3"
-                                    v-model="channel.channelId"
+                                    v-model="ch.channelId"
                                 />
                             </UFormGroup>
 
@@ -226,7 +226,17 @@
                 </UFormGroup>
 
                 <template #footer>
-                    <div class="flex flex-row-reverse"></div>
+                    <div class="flex flex-row-reverse">
+                        <div class="flex flex-row-reverse">
+                            <UButton
+                                :loading="isSaveButtonLoading"
+                                size="xs"
+                                @click="console.info('Edit user')"
+                            >
+                                Save
+                            </UButton>
+                        </div>
+                    </div>
                 </template>
             </UCard>
         </UModal>
@@ -279,7 +289,7 @@
     // composables
     useUpdateTitle('Users')
 
-    type selectedUser = {
+    type SelectedUser = {
         id: string
         email: string
         type: string
@@ -292,7 +302,7 @@
     const isAddUserModalOpen = ref(false)
     const isEditUserModalOpen = ref(false)
     const isDeleteUserModalOpen = ref(false)
-    const selectedUser = ref<selectedUser>({
+    const selectedUser = ref<SelectedUser>({
         id: '',
         email: '',
         type: '',
@@ -427,7 +437,7 @@
     /**
      * sets the selected row from the table to be deleted
      */
-    function openDeleteUserModal(user: selectedUser) {
+    function openDeleteUserModal(user: SelectedUser) {
         selectedUser.value = user
         isDeleteUserModalOpen.value = true
     }
@@ -472,7 +482,7 @@
     /**
      * TODO: Edit user
      */
-    function openEditUserModal(user: selectedUser) {
+    function openEditUserModal(user: SelectedUser) {
         selectedUser.value = user
         isEditUserModalOpen.value = true
     }

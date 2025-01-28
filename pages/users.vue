@@ -101,16 +101,6 @@
                                     <UButton
                                         square
                                         size="xs"
-                                        icon="i-heroicons-minus"
-                                        @click="channels.splice(index, 1)"
-                                        v-if="channels.length > 1"
-                                    />
-                                </div>
-
-                                <div class="flex flex-col-reverse">
-                                    <UButton
-                                        square
-                                        size="xs"
                                         icon="i-heroicons-plus"
                                         @click="
                                             channels.push({
@@ -118,6 +108,17 @@
                                                 channelId: '',
                                             })
                                         "
+                                    />
+                                </div>
+
+                                <div class="flex flex-col-reverse">
+                                    <UButton
+                                        square
+                                        color="red"
+                                        size="xs"
+                                        icon="i-heroicons-minus"
+                                        @click="channels.splice(index, 1)"
+                                        v-if="channels.length > 1"
                                     />
                                 </div>
                             </div>
@@ -279,12 +280,14 @@
 
         if (userEmail.value === '') {
             alert('Email cannot be empty!')
+            isSaveButtonLoading.value = false
             return
         }
 
         for (const channel of channels.value) {
             if (channel.channelName === '' || channel.channelId === '') {
                 alert('Channel Name/ID cannot be empty!')
+                isSaveButtonLoading.value = false
                 return
             }
         }
@@ -371,7 +374,7 @@
     }
 
     /**
-     *
+     * TODO: Edit user
      */
     function editUser(userId: string) {
         console.info('Edit user', userId)

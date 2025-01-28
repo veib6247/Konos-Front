@@ -490,7 +490,20 @@
      * TODO: Edit user
      */
     function openEditUserModal(user: SelectedUser) {
-        selectedUser.value = user
+        // Create a deep copy of the channels array
+        const copiedChannels = user.channels.map((channel) => ({
+            channelName: channel.channelName,
+            channelId: channel.channelId,
+        }))
+
+        // Set the selectedUser with the copied channels
+        selectedUser.value = {
+            id: user.id,
+            email: user.email,
+            type: user.type,
+            channels: copiedChannels, // Use the deep copy here
+        }
+
         isEditUserModalOpen.value = true
     }
 

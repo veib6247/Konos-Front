@@ -32,7 +32,14 @@
                             icon="i-heroicons-pencil"
                             color="gray"
                             variant="solid"
-                            @click="editUser(row.id)"
+                            @click="
+                                openEditUserModal({
+                                    id: row.id,
+                                    email: row.email,
+                                    type: row.type,
+                                    channels: row.channels,
+                                })
+                            "
                         />
                         <UButton
                             square
@@ -44,6 +51,8 @@
                                 openDeleteUserModal({
                                     id: row.id,
                                     email: row.email,
+                                    type: row.type,
+                                    channels: row.channels,
                                 })
                             "
                         />
@@ -140,6 +149,38 @@
             </UCard>
         </UModal>
 
+        <!-- MODAL: EDIT USER -->
+        <UModal v-model="isEditUserModalOpen">
+            <UCard class="overflow-auto">
+                <template #header> Edit User </template>
+
+                <div class="flex flex-col gap-6">
+                    <UFormGroup size="sm" label="ID">
+                        <UInput disabled v-model="selectedUser.id" />
+                    </UFormGroup>
+
+                    <UFormGroup size="sm" label="Email" required>
+                        <UInput
+                            placeholder="you@payreto.com"
+                            icon="i-heroicons-envelope"
+                            v-model="selectedUser.email"
+                        />
+                    </UFormGroup>
+
+                    <UFormGroup size="sm" label="Type">
+                        <USelect
+                            v-model="selectedUser.type"
+                            :options="userTypes"
+                        />
+                    </UFormGroup>
+                </div>
+
+                <template #footer>
+                    <div class="flex flex-row-reverse"></div>
+                </template>
+            </UCard>
+        </UModal>
+
         <!-- MODAL: CONFIRM USER DELETION -->
         <UModal v-model="isDeleteUserModalOpen">
             <UCard
@@ -191,16 +232,21 @@
     type selectedUser = {
         id: string
         email: string
+        type: string
+        channels: string[]
     }
 
     // states
     const isDevMode = import.meta.env.DEV
     const isTableLoading = ref(true)
     const isAddUserModalOpen = ref(false)
+    const isEditUserModalOpen = ref(false)
     const isDeleteUserModalOpen = ref(false)
     const selectedUser = ref<selectedUser>({
         id: '',
         email: '',
+        type: '',
+        channels: [],
     })
     const userColumns = [
         { key: 'id', label: 'ID' },
@@ -376,7 +422,9 @@
     /**
      * TODO: Edit user
      */
-    function editUser(userId: string) {
-        console.info('Edit user', userId)
+    function openEditUserModal(user: selectedUser) {
+        selectedUser.value = user
+        console.info('Edit user', user)
+        isEditUserModalOpen.value = true
     }
 </script>

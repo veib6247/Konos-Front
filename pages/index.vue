@@ -107,7 +107,7 @@
      * loads data into table
      */
     const getData = async () => {
-        logger.info('Fetching table data...')
+        logger.info('Fetching table data')
 
         const tableName = 'Slack Timestamp'
         isLoading.value = true

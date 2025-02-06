@@ -57,10 +57,11 @@
 <script lang="ts" setup>
     import { mkConfig, generateCsv, download } from 'export-to-csv'
 
-    const isDevMode = import.meta.env.DEV
     useUpdateTitle('Home')
 
     // init date picker with the date today
+    const logger = useLogger()
+    const isDevMode = import.meta.env.DEV
     const dateRange = useState<DateRange>('dateRange')
     const supabase = useSupabaseClient()
 
@@ -106,7 +107,7 @@
      * loads data into table
      */
     const getData = async () => {
-        if (isDevMode) console.group('Get table data')
+        logger.info('Fetching table data...')
 
         const tableName = 'Slack Timestamp'
         isLoading.value = true
@@ -116,13 +117,11 @@
                 ? await fetchOnSpecificUsers(tableName)
                 : await fetchOnUpdate(tableName)
         } catch (error) {
-            console.error(error)
+            logger.error(error)
             rows.value = []
         }
 
         isLoading.value = false
-
-        if (isDevMode) console.groupEnd()
     }
 
     /**
@@ -130,7 +129,7 @@
      * @param tableName supabase table name
      */
     const fetchOnUpdate = async (tableName: string) => {
-        if (isDevMode) console.time('Fetched table contents')
+        logger.info('Fetching table contents')
 
         try {
             const query = supabase
@@ -147,14 +146,12 @@
                 )
 
             const { data, error } = await query
-            if (error) console.error(error)
+            if (error) logger.error(error)
 
             rows.value = data
         } catch (error) {
-            console.error(error)
+            logger.error(error)
         }
-
-        if (isDevMode) console.timeEnd('Fetched table contents')
     }
 
     /**
@@ -162,7 +159,7 @@
      * @param tableName supabase table name
      */
     const fetchOnSpecificUsers = async (tableName: string) => {
-        if (isDevMode) console.time('Fetched table contents - specific user(s)')
+        logger.info('Fetched table contents - specific user(s)')
 
         const users = []
         for (const user of selectedUsers.value) {
@@ -185,41 +182,30 @@
                 )
 
             const { data, error } = await query
-            if (error) console.error(error)
+            if (error) logger.error(error)
 
             rows.value = data
         } catch (error) {
-            console.error(error)
+            logger.error(error)
         }
-
-        if (isDevMode)
-            console.timeEnd('Fetched table contents - specific user(s)')
     }
 
     /**
-     *
+     * export the current table data to a CSV file
      */
     const exportData = () => {
-        if (isDevMode) console.group('CSV Processing')
-
         if ((rows.value as []).length > 1) {
-            if (isDevMode) console.time('CVS Conversion')
-
             // init config for export button
             // mkConfig merges your options with the defaults
             // and returns WithDefaults<ConfigOptions>
             const csvConfig = mkConfig({ useKeysAsHeaders: true })
             const csv = generateCsv(csvConfig)(rows.value)
             download(csvConfig)(csv)
-
-            if (isDevMode) console.timeEnd('CVS Conversion')
         } else {
             const errorMsg = 'No data to convert to CSV!'
-            console.error(errorMsg)
+            logger.error(errorMsg)
             alert(errorMsg)
         }
-
-        if (isDevMode) console.groupEnd()
     }
 
     await getData()

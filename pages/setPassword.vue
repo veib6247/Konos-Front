@@ -72,7 +72,7 @@
         layout: 'un-auth',
     })
 
-    const isDevMode = import.meta.env.DEV
+    const logger = useLogger()
     const isLoading = ref(false)
     const hash = useRoute().hash.substring(1)
     const params = new URLSearchParams(hash)
@@ -118,7 +118,7 @@
             if (!data.ok) {
                 const response = await data.json()
                 errMsg.value = response
-                console.error('Error setting password:', response)
+                logger.error('Error setting password:', response)
 
                 return
             }
@@ -127,8 +127,8 @@
             if (!response.isUpdatePasswordSuccess) {
                 errMsg.value =
                     'Failed to update password, please check your input.'
-                if (isDevMode)
-                    console.error('Error setting password:', response)
+
+                logger.error('Error setting password:', response)
 
                 return
             }
@@ -140,9 +140,8 @@
             })
             await navigateTo('/')
         } catch (error) {
-            const msg = 'Error resetting password:'
-            errMsg.value = msg
-            console.error(msg, error)
+            errMsg.value = 'Error resetting password:'
+            logger.error(errMsg.value, error)
         }
 
         isLoading.value = false

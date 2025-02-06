@@ -304,7 +304,7 @@
     }
 
     // states
-    const isDevMode = import.meta.env.DEV
+    const logger = useLogger()
     const isTableLoading = ref(true)
     const isAddUserModalOpen = ref(false)
     const isEditUserModalOpen = ref(false)
@@ -343,10 +343,10 @@
      *
      */
     async function getUserList() {
+        logger.info('Fetching users...')
+
         userRows.value = []
         isTableLoading.value = true
-
-        if (isDevMode) console.time('Fetch user list')
 
         try {
             const response = await fetch('/api/getUsersList')
@@ -365,11 +365,10 @@
                 }
             }
         } catch (error) {
-            console.error('Failed to fetch user list', error)
+            logger.error('Failed to fetch user list', error)
         }
 
         isTableLoading.value = false
-        if (isDevMode) console.timeEnd('Fetch user list')
     }
 
     /**
@@ -434,7 +433,7 @@
                 })
             }
         } catch (error) {
-            console.error('Failed to add new user', error)
+            logger.error('Failed to add new user', error)
         } finally {
             isSaveButtonLoading.value = false
             getUserList()
@@ -462,18 +461,20 @@
             })
 
             if (!response.ok) {
-                console.error('Failed to delete user', userId)
+                logger.error('Failed to delete user', userId)
                 return
             }
 
             const data = await response.json()
             if (data.status !== 200) {
-                console.error('Failed to delete user', data)
+                logger.error('Failed to delete user', data)
                 return
             }
 
-            if (isDevMode) console.info('User deleted', data)
+            logger.info('User deleted', data)
+
             isDeleteUserModalOpen.value = false
+
             await getUserList()
             toast.add({
                 title: 'User Deleted Successfully',
@@ -482,12 +483,12 @@
             })
             return
         } catch (error) {
-            console.error('Failed to delete user', error)
+            logger.error('Failed to delete user', error)
         }
     }
 
     /**
-     * TODO: Edit user
+     * Open the edit user modal
      */
     function openEditUserModal(user: SelectedUser) {
         // Create a deep copy of the channels array
@@ -508,9 +509,10 @@
     }
 
     /**
-     *
+     * TODO: Save the edited user
+     * TODO: Move the modals to a separate component
      */
     function saveEditedUser() {
-        console.info(selectedUser.value)
+        logger.info('Editing user', selectedUser.value)
     }
 </script>

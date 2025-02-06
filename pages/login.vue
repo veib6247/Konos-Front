@@ -41,6 +41,7 @@
     import { z } from 'zod'
     import type { FormSubmitEvent } from '#ui/types'
 
+    const logger = useLogger()
     const supabase = useSupabaseClient()
     const user = useSupabaseUser()
     const isLoading = ref(false)
@@ -83,7 +84,7 @@
         } catch (error) {
             isError.value = true
             errorMsg.value = 'Invalid Credentials'
-            console.error(error)
+            logger.error(error)
         } finally {
             isLoading.value = false
         }

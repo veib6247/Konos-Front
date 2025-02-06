@@ -61,7 +61,6 @@
 
     // init date picker with the date today
     const logger = useLogger()
-    const isDevMode = import.meta.env.DEV
     const dateRange = useState<DateRange>('dateRange')
     const supabase = useSupabaseClient()
 

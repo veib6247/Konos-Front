@@ -421,6 +421,7 @@
                 const data = await res.json()
 
                 if (!data.isAddUserSuccess) {
+                    logger.error('Failed to add new user', data.result.msg)
                     alert(data.result.msg)
                     return
                 }
